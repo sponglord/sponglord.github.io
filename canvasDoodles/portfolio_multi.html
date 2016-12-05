@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>PortfolioJS</title>
+	<script type="text/javascript" src="scripts/jquery-1.7.min.js"></script>
+	<script type="text/javascript" src="scripts/portfolio_2_standalone.js"></script>
+	<script type="text/javascript" src="scripts/portfolio_4_standalone.js"></script>
+	<script type="text/javascript" src="scripts/portfolio_4_7_standalone.js"></script>
+	<script type="text/javascript" src="scripts/portfolio_4_7_2_standalone.js"></script>
+	<script type="text/javascript" src="scripts/portfolio_4_8_standalone.js"></script>
+	<script type="text/javascript" src="scripts/portfolio_4_8_1_standalone.js"></script>
+	<script type="text/javascript" src="scripts/portfolio_4_8_1_5_standalone.js"></script>
+	<script type="text/javascript" src="scripts/portfolio_4_8_1_6_standalone.js"></script>
+	<script type="text/javascript" src="scripts/portfolio_4_8_1_7_standalone.js"></script>
+	<script type="text/javascript" src="scripts/portfolio_4_8_2_standalone.js"></script>
+	<script type="text/javascript" src="scripts/portfolio_4_8_3_standalone.js"></script>
+	<script type="text/javascript" src="scripts/portfolio_5_standalone.js"></script>
+	<script type="text/javascript">
+		$(function () {
+			var p = new Portfolio_2_s($("#canvas1"));
+			p.init();
+			p = new Portfolio_4_s($("#canvas2"), 10);
+			p.init();
+			p = new Portfolio_4_7_s($("#canvas3"), 4);
+			p.init();
+			p = new Portfolio_4_7_2_s($("#canvas4"), 30);
+			p.init();
+			p = new Portfolio_4_8_s($("#canvas5"));
+			p.init();
+			p = new Portfolio_4_8_1_s($("#canvas6"));
+			p.init();
+			p = new Portfolio_4_8_1_5_s($("#canvas7"));
+			p.init();
+			p = new Portfolio_4_8_1_6_s($("#canvas8"), 20);
+			p.init();
+			p = new Portfolio_4_8_1_7_s($("#canvas9"), 20);
+			p.init();
+			p = new Portfolio_4_8_2_s($("#canvas10"));
+			p.init();
+			p = new Portfolio_4_8_3_s($("#canvas11"), 20);
+			p.init();
+			p = new Portfolio_5_s($("#canvas12"), 40);
+			p.init();
+			//alert("loader")
+		});
+	</script>
+	<style type="text/css">
+	.div1, .div2, .div3, .div4, .div5, .div6, .div7, .div8, .div9, .div10, .div11, .div12{
+		float:left;
+		padding:5px;
+	}
+
+	body{
+		background-color : #000000;
+		margin-left: 30px;
+		margin-top: 30px;
+		padding: 0px;
+	}
+	</style>
+</head>
+<body>
+	<div class="div1" title="version_2">
+		<a href="portfolio_2.html"><canvas id="canvas1" width = "250" height="250"/></a>
+	</div>
+	<div class="div2" title="version_4">
+		<a href="portfolio_4.html"><canvas id="canvas2" width = "250" height="250"/></a>
+	</div>
+	<div class="div3" title="version_4_7">
+		<a href="portfolio_4_7.html"><canvas id="canvas3" width = "250" height="250"/></a>
+	</div>
+	<div class="div4" title="version_4_7_2">
+		<a href="portfolio_4_7_2.html"><canvas id="canvas4" width = "250" height="250"/></a>
+	</div>
+	<div class="div5" title="version_4_8">
+		<a href="portfolio_4_8.html"><canvas id="canvas5" width = "250" height="250"/></a>
+	</div>
+	<div class="div6" title="version_4_8_1">
+		<a href="portfolio_4_8_1.html"><canvas id="canvas6" width = "250" height="250"/></a>
+	</div>
+	<div class="div7" title="version_4_8_1_5">
+		<a href="portfolio_4_8_1_5.html"><canvas id="canvas7" width = "250" height="250"/></a>
+	</div>
+	<div class="div8" title="version_4_8_1_6">
+		<a href="portfolio_4_8_1_6.html"><canvas id="canvas8" width = "250" height="250"/></a>
+	</div>
+	<div class="div9" title="version_4_8_1_7">
+		<a href="portfolio_4_8_1_7.html"><canvas id="canvas9" width = "250" height="250"/></a>
+	</div>
+	<div class="div10" title="version_4_8_2">
+		<a href="portfolio_4_8_2.html"><canvas id="canvas10" width = "250" height="250"/></a>
+	</div>
+	<div class="div11" title="version_4_8_3">
+		<a href="portfolio_4_8_3.html"><canvas id="canvas11" width = "250" height="250"/></a>
+	</div>
+	<div class="div12" title="version_5">
+		<a href="portfolio_5.html"><canvas id="canvas12" width = "250" height="250"/></a>
+	</div>
+</body>
+</html>

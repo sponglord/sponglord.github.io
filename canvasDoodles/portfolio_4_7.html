@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>PortfolioJS</title>
+	<script type="text/javascript" src="scripts/jquery-1.7.min.js"></script>
+	<script type="text/javascript" src="scripts/portfolio_4_7_standalone.js"></script>
+	<script type="text/javascript">
+		$(function () {
+			var p = new Portfolio_4_7_s($("#canvas1"));
+			p.init();
+			//alert("loader");
+			var scope = this;
+			$("#canvas1").mousedown(function(event)
+			{
+				//alert("div2=" + $("#div2")[0]);
+				//var ele = document.getElementById("div2");
+				//ele.style.display = "none";
+				//alert('$("#div2")[0].style.display='+$("#div2")[0].style.display)
+				$("#div2")[0].style.display = "none";
+
+			});
+		});
+	</script>
+	<style type="text/css">
+	<!-- div2: display re hiding element most important is the setting to "none" on mousedown-->
+	<!--div2: clear re setting div2 below div1-->
+	.div1{
+		float:left;
+	}
+	.div2 { 
+		float:left; 
+		clear:both;
+		text-align:center;
+		width: 500px;
+		display: block;
+		padding-top:20px;
+	}
+	
+	body{
+		background-color : #000000;
+		margin-left: 30px;
+		margin-top: 30px;
+		padding: 0px;
+	}
+	p{
+		color:#666666;
+		font-family:verdana;
+		font-size:60%;
+	}
+	</style>
+</head>
+<body>
+	<div class="div1">
+		<canvas id="canvas1" width = "500" height="500"/>
+	</div>
+	<div class="div2" id="div2">
+		<p>click image once to make it happen</p>
+	</div>
+	
+</body>
+</html>
