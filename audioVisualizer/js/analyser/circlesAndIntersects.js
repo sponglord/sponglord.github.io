@@ -24,7 +24,7 @@ define(
             // Private vars
             var defaultOptions = {
 
-                // general
+                // GENERAL
                 numFrequencies : 512,
                 batchModulo : 1,
 
@@ -32,26 +32,37 @@ define(
 
                 ampMultiplier : 0.5,
                 boostAmp : false,
-                boostAmpDivider : 5,
+                boostAmpDivider : 35,
 
                 mapFreqToColor : true,
 
-                canvasFillAlpha : 0.25, //.25 for others, 0.1 for 'lines'
+                canvasFillAlpha : 0.1, //.25 for others, 0.1 for 'lines'
                 fillStyle: [255, 255, 255],
                 strokeStyle: [255, 255, 255],
 
                 linkAlphaToAmplitude : true,
                 invertAlpha : true,
 
-                // specific
+
+                // SPECIFIC
+
+                // circles
+                renderCircles : true,
+                numElements : 0,
+                linkWidthToAmplitude : false,
+                maxLineWidth: 20,
+
+                // intersects
+                renderIntersects : true,
                 drawIntersects : true, // if false & drawLines is true makes the effect formerly known as: lines
-                intersectRadius : 5, // disregarded if drawIntersects is false
+                intersectRadius : 2, // disregarded if drawIntersects is false
                 doIntersectFill : true, // disregarded if drawIntersects is false
                 doIntersectStroke : false, // disregarded if drawIntersects is false
 
                 drawLines : true, // if true makes the effect formerly known as: intersectsLines (needs fillStyle...0.1 & spacing:20)
-                clipLines : true, // true = draw from edges of intersect circles not from centers ('dumbbell' effect)
-                drawLineStyle : [255, 255, 255]
+                intersectLineWidth : 1,
+                drawLineStyle : [255, 255, 255],
+                clipLines : true // true = draw from edges of intersect circles not from centers ('dumbbell' effect)
 
             }
 
@@ -108,7 +119,7 @@ define(
                 // normalise the amplitude within the possible range
                 var ampNorm = Utils.normalize(pAmplitude, 0, 255);
                 if(ampNorm === 0){
-                    return false
+                  return false
                 }
 
                 //-------------------------------------------------------------------------------
@@ -159,92 +170,130 @@ define(
                 }
 
 
-                if(lastCircle){
+                var multiplier = this.options.ampMultiplier;
+
+                // Use math.log to boost size - the larger the amplitude the bigger the boost
+                // Values 1 - 255 will give results 0 - 2.4065
+                if(this.options.boostAmp){
+
+                    var log =  Math.log10(pAmplitude / this.options.boostAmpDivider);
+                    multiplier = (log > 0 && log > this.options.ampMultiplier)? log : this.options.ampMultiplier
+                }
+
+
+                // CIRCLES
+                if(this.options.renderCircles){
 
                     this.canvCtx.lineWidth = this.options.lineWidth;
 
-                    var multiplier = this.options.ampMultiplier;
+                    if(this.options.linkWidthToAmplitude){
 
-                    // TODO - do we want to do this for this effect - just changing the ampMultiplier makes it 'jittery' enough?
-                    // Use math.log to boost size - the larger the amplitude the bigger the boost
-                    // Values 1 - 255 will give results 0 - 2.4065
-                    if(this.options.boostAmp){
-
-                        var log =  Math.log10(pAmplitude / this.options.boostAmpDivider);
-                        multiplier = (log > 0 && log > this.options.ampMultiplier)? log : this.options.ampMultiplier
+                        this.canvCtx.lineWidth = Math.floor(Utils.lerp(ampNorm, 0, this.options.maxLineWidth));
                     }
 
-                    var intersect = Utils.circleIntersection(posX, this.canvH/2, pAmplitude * multiplier, lastCircle[0], lastCircle[1], lastCircle[2]);
-
-                    if(intersect){
-
-                        if(this.options.drawIntersects){
-
-                            this.canvCtx.beginPath();
-                            this.canvCtx.arc(intersect[0], intersect[1], this.options.intersectRadius, 0, Math.PI * 2, false);
+                    this.canvCtx.beginPath();
+                    this.canvCtx.arc(posX, this.canvH / 2, pAmplitude * multiplier, 0, Math.PI * 2, false);
+                    this.canvCtx.stroke();
+                }
+                //--
 
 
-                            // Intersect circles are drawn at max. sat & bright
-                            if(this.options.doIntersectFill){
+                // INTERSECTS
+                if(this.options.renderIntersects){
 
-                                this.canvCtx.fill();
-                            }
+                    if(lastCircle){
 
-                            if(this.options.doIntersectStroke){
+                        this.canvCtx.lineWidth = this.options.intersectLineWidth;
 
-                                this.canvCtx.stroke();
-                            }
-                        }
+//                        multiplier = this.options.ampMultiplier;
 
+                        var intersect = Utils.circleIntersection(posX, this.canvH / 2, pAmplitude * multiplier, lastCircle[0], lastCircle[1], lastCircle[2]);
 
-                        if(intersect.length > 2){
+                        if(intersect){
 
                             if(this.options.drawIntersects){
 
                                 this.canvCtx.beginPath();
-                                this.canvCtx.arc(intersect[2], intersect[3], this.options.intersectRadius, 0, Math.PI * 2, false);
+                                this.canvCtx.arc(intersect[0], intersect[1], this.options.intersectRadius, 0, Math.PI * 2, false);
+
+
+                                // Intersect circles are drawn at max. sat & bright
+                                if(this.options.doIntersectFill){
+
+                                    this.canvCtx.fill();
+                                }
 
                                 if(this.options.doIntersectStroke){
+
+                                    this.canvCtx.stroke();
+                                }
+                            }
+
+
+                            if(intersect.length > 2){
+
+                                if(this.options.drawIntersects){
+
+                                    this.canvCtx.beginPath();
+                                    this.canvCtx.arc(intersect[2], intersect[3], this.options.intersectRadius, 0, Math.PI * 2, false);
+
+                                    if(this.options.doIntersectStroke){
+                                        this.canvCtx.stroke();
+                                    }
+
+                                    if(this.options.doIntersectFill){
+                                        this.canvCtx.fill();
+                                    }
+                                }
+
+                                if(this.options.drawLines){
+
+                                    if(!this.options.mapFreqToColor){
+
+                                        this.canvCtx.strokeStyle = 'rgba(' + this.options.drawLineStyle[0] + ',' + this.options.drawLineStyle[1] + ',' + this.options.drawLineStyle[2] + ',' + alpha + ')';
+
+                                    }else{
+
+                                        // Line sat & bright is linked to amplitude
+                                        this.canvCtx.strokeStyle = 'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',' + alpha + ')';
+                                    }
+
+                                    var lineLengthAdjust = (!this.options.clipLines) ? 0 : this.options.intersectRadius;
+
+                                    // Draw line
+                                    this.canvCtx.beginPath();
+                                    this.canvCtx.moveTo(intersect[0], intersect[1] - lineLengthAdjust);
+                                    this.canvCtx.lineTo(intersect[2], intersect[3] + lineLengthAdjust);
                                     this.canvCtx.stroke();
                                 }
 
-                                if(this.options.doIntersectFill){
-                                    this.canvCtx.fill();
-                                }
-                            }
-
-                            if(this.options.drawLines){
-
-                                if(!this.options.mapFreqToColor){
-
-                                    this.canvCtx.strokeStyle = 'rgba(' + this.options.drawLineStyle[0] + ','  + this.options.drawLineStyle[1] + ',' + this.options.drawLineStyle[2] + ',' + alpha + ')';
-
-                                }else{
-
-                                    // Line sat & bright is linked to amplitude
-                                    this.canvCtx.strokeStyle = 'rgba(' + rgb[0] + ','  + rgb[1] + ',' + rgb[2] + ',' + alpha + ')';;
-                                }
-
-                                var lineLengthAdjust = (!this.options.clipLines)? 0 : this.options.intersectRadius;
-
-                                // Draw line
-                                this.canvCtx.beginPath();
-                                this.canvCtx.moveTo(intersect[0], intersect[1] - lineLengthAdjust);
-                                this.canvCtx.lineTo(intersect[2], intersect[3] + lineLengthAdjust);
-                                this.canvCtx.stroke();
                             }
 
                         }
-
                     }
-                }
 
-                lastCircle = [posX, this.canvH/2, pAmplitude * multiplier];
+                    lastCircle = [posX, this.canvH / 2, pAmplitude * multiplier];
+                }
+                //--
 
                 posX += this.options.spacing;
 
                 return true;
             }
+
+            that.optionChange = function(pOpt, pVal){
+
+                __super.optionChange(pOpt, pVal);
+
+                switch(pOpt){
+
+                    case 'numElements':
+
+                        this.binSize = this.options.numElements = pVal;
+
+                        break
+                }
+            };
 
             return that;
         }

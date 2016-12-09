@@ -17,24 +17,26 @@ define(
             var defaultOptions = {
 
                 // general
+                smoothingTimeConstant : 0.8,
+
                 numFrequencies : 512,
                 batchModulo : 1,
 
                 boostAmp : false,
-                boostAmpDivider : 35, // lower = bigger circles
+                boostAmpDivider : 5, // lower = bigger circles
 
                 mapFreqToColor : true,
                 brightColors : false,
 
-                canvasFillAlpha : 0.1, // 0.1 good for original circles effect
+                canvasFillAlpha : 0.3, // 0.1 good for original circles effect
 
                 linkAlphaToAmplitude : false,
                 invertAlpha : false,
 
                 // specific
-                numElements : 0,
-                linkWidthToAmplitude : false,
-                maxLineWidth: 20
+                numElements : 60,
+                linkWidthToAmplitude : true,
+                maxLineWidth: 10
             }
 
             var posX = null;
@@ -46,6 +48,11 @@ define(
             that.init = function(pVizType){
 
                 __super.init(pVizType);
+
+                var canvas = document.getElementById('canvas');
+                // higher heights have a negative impact on performance e.g. a height of 800px means a CPU usage of 70%+
+                // 500px means a CPU usage of around 50%
+                canvas.height = 500;
             };
 
             /////////// OVERRIDEABLE FUNCTIONS FOR SUBCLASSES TO CHANGE CORE FUNCTIONALITY /////////////
@@ -62,7 +69,7 @@ define(
 
             that.preLoopAction = function(){
 
-                posX = this.options.startPosX;
+                posX = 0;
 
                 // reset the canvas, with a reduced alpha to leave traces of the last draw
                 __super.preLoopAction();
@@ -122,8 +129,8 @@ define(
                     var hue = Math.floor(Utils.lerp(freqNorm, 0, 360));
 
                     // saturation & brightnesss
-                    var sat = Math.floor(Utils.lerp(ampNorm, 40, 100));// TODO make 2nd param an option?
-                    var bright = Math.floor(Utils.lerp(ampNorm, 50, 100));
+                    var sat = Math.floor(Utils.lerp(ampNorm, 40, 100));// rings = 75 TODO make 2nd param an option?
+                    var bright = Math.floor(Utils.lerp(ampNorm, 50, 100));//
 
                     var rgb = Utils.hsvToRGB([hue, sat, bright]);
                     var rgbBright = Utils.hsvToRGB([hue, 100, 100]);
@@ -139,30 +146,56 @@ define(
                 }
 
 
-                // DRAW EACH DISK
-                this.canvCtx.lineWidth = this.options.lineWidth;
+                // DRAW EACH RING
+                var stroke = this.options.lineWidth;
 
                 if(this.options.linkWidthToAmplitude){
 
-                    this.canvCtx.lineWidth = Math.floor(Utils.lerp(ampNorm, 0, this.options.maxLineWidth));
+                    stroke = Math.floor(Utils.lerp(ampNorm, 0, this.options.maxLineWidth));
                 }
-
-                var multiplier = this.options.ampMultiplier;
 
                 // Use math.log to boost size - the larger the amplitude the bigger the boost
                 // Values 1 - 255 will give results 0 - 2.4065
-                if(this.options.boostAmp){
+//                if(this.options.boostAmp){
+//
+//                    var log =  Math.log10(pAmplitude / this.options.boostAmpDivider);
+//                    if(log > 1){
+//                        stroke *= log;
+//                    }
+//                }
 
-                    var log =  Math.log10(pAmplitude / this.options.boostAmpDivider);
-                    multiplier = (log > 0 && log > this.options.ampMultiplier)? log : this.options.ampMultiplier
+                this.canvCtx.lineWidth = stroke;
+
+                var multiplier = this.options.ampMultiplier;
+
+                // Create start & angles for the arc...
+
+                // Stagger start point - gives value between -0.5 & 0.5 (equiv to ±30 degrees)
+                var startAngle = Math.sin(pFreqIndex) * 0.5;
+
+                // Extend startAngle round to a maximum of 360 degrees, based on amplitude
+                var angle = Utils.lerp(ampNorm, 0, Math.PI * 2);
+                angle += startAngle;
+
+                // Start every other arc 180 degrees further on
+                var dir = (i%2 === 0)? true : false;
+                if(dir){
+                    startAngle += Math.PI;
+                    angle += Math.PI;
                 }
 
+
+                // How far from the centre the arc is drawn depends on its frequency
+                var radius = 10  + (pFreqIndex  * multiplier);
+
+
+                // Draw each arc
                 this.canvCtx.beginPath();
-                this.canvCtx.arc(posX, this.canvH / 2, pAmplitude * multiplier, 0, Math.PI * 2, false);
+                this.canvCtx.arc(this.centerX, this.centerY, radius + posX, startAngle, angle, false);
                 this.canvCtx.stroke();
 
-
-                posX += this.options.spacing;
+                // take into account the previous stroke width so the next arc doesn't overlap this one
+                posX += stroke;
 
                 return true;
             }
