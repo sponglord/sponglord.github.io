@@ -630,6 +630,8 @@ define(
 
                     this.options.numElements = 0;// will decide number based on width/spacing
 
+                    this.options.brightColors = false;
+
                     this.options.linkAlphaToAmplitude = true;
                     this.options.invertAlpha = true;
 
