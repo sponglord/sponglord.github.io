@@ -2,77 +2,22 @@
 define(
     [
         'datgui',
-        'jquery'
-//        'utils/utils2'
+        'jquery',
+        'lodash'
     ],
     function(
         dat,
-        $jq
-//        Utils
+        $jq,
+        _
     ){
 
         "use strict";
 
         function options(){
 
-
             var that = {};
 
             that.options = {};
-
-            // general
-            that.options.numFrequencies = 512;
-            that.options.batchModulo = 1;
-
-            that.options.startPosX = 80;
-            that.options.spacing = 40;
-
-            that.options.ampMultiplier = 1;
-            that.options.boostAmp = false;
-            that.options.boostAmpDivider = 5;
-
-            that.options.mapFreqToColor = true;
-            that.options.brightColors = true;
-
-            that.options.lineWidth = 1;
-            that.options.canvasFillStyle = [ 0, 0, 0];
-            that.options.canvasFillAlpha = 0.25;
-            that.options.fillStyle = [ 255, 255, 255];
-            that.options.strokeStyle = [ 255, 255, 255];
-
-            that.options.linkAlphaToAmplitude = false;
-            that.options.invertAlpha = false;
-
-
-            // barLoop || star || bars
-            that.options.numElements = 160; // number of 'ticks' around the circle (barLoop) OR number of 'arms the star has
-
-            // barLoop
-            that.options.radius = 200;// radius of the initial circle, the point on the circumference is the centre of the tick bar
-            that.options.counterClockwise = false;// which way round to draw the ticks - starting at 'midnight'
-
-            // barLoop || bars || star || circles
-            that.options.linkWidthToAmplitude = false;
-            that.options.maxLineWidth = 20;
-
-            // star
-            that.options.showStarForEachFreq = true;// if true renders one 'star' for every frequency, overlaying them to create a pulsing star effect
-            // else renders one 'star' with each arm representing one frequency
-
-            // intersects
-            that.options.drawIntersects = true;// if false & drawLines is true makes the effect formerly known as: lines
-            that.options.intersectRadius = 2; // disregarded if drawCircles is false
-            that.options.doIntersectFill = true; // disregarded if drawCircles is false
-            that.options.doIntersectStroke = false; // disregarded if drawCircles is false
-            that.options.drawLines = true; // if true makes the effect formerly known as: intersectsLines (needs fillStyle...0.1 & spacing:20)
-            that.options.drawLineStyle = [255, 255, 255];
-            that.options.intersectLineWidth = 1;
-            that.options.clipLines = true;
-
-
-            that.options.renderCircles = true;
-            that.options.renderIntersects = true;
-
 
             var __hideArray = [];
 
@@ -89,6 +34,7 @@ define(
                 var customContainer = document.getElementById('options');
                 customContainer.appendChild(gui.domElement);
 
+                // adds save options at top of gui panel
                 gui.remember(options);
 
                 var gen = gui.addFolder('General');
@@ -118,31 +64,6 @@ define(
 
                     // ONLY DO IF vizType = 'intersects'
                     if(that.vizType === 'intersects' || that.vizType === 'circlesandintersects'){
-
-                        // If we ARE filling the intersect circles then we should show the fillStyle option IF mapFreqToColor is set to false
-//                        // And hide the fillStyle option IF mapFreqToColor is set to true
-//                        if(that.options.doIntersectFill){
-//
-//                            showHideElement('fillStyle', !value); // OPP to this value
-//
-//                        }else{
-//
-//                            // If we are NOT filling the intersect circles -  since intersects is currently the only effect that uses fillStyle
-//                            // we should always hide the fillStyle option
-//                            showHideElement('fillStyle', false);
-//                        }
-//
-//                        // If we ARE stroking the intersect circles then we should show the strokeStyle option IF mapFreqToColor is set to false
-//                        // And hide the strokeStyle option IF mapFreqToColor is set to true
-//                        if(that.options.doIntersectStroke){
-//
-//                            showHideElement('strokeStyle', !value); // OPP to this value
-//
-//                        }else{
-//
-//                            // If we're in 'intersects' and NOT stroking the intersect circles then always hide the strokeStyle option
-//                            showHideElement('strokeStyle', false);
-//                        }
 
                         showHideElement('fillStyle', !value); // OPP to this value
                         showHideElement('strokeStyle', !value); // OPP to this value
@@ -346,100 +267,6 @@ define(
                     star.open();
                 }
 
-                //-------------------------------
-//                if(this.vizType === 'circles'){
-//
-//                    var circles = gui.addFolder('Circles');
-//
-//                    circles.add(options, 'numElements').onChange(function(value){
-//
-//                        window.viz.optionChange('numElements', value);
-//                    });
-//
-//                    circles.add(options, 'linkWidthToAmplitude').onChange(function(value){
-//
-//                        showHideElement('lineWidth', !value); // OPP to this value
-//                        showHideElement('maxLineWidth', value);
-//
-//                        window.viz.optionChange('linkWidthToAmplitude', value);
-//                    });
-//
-//                    circles.add(options, 'maxLineWidth', 1, 200).step(1).onChange(function(value){
-//
-//                        window.viz.optionChange('maxLineWidth', value);
-//                    });
-//
-//
-//                    circles.open();
-//                }
-
-                //---------------------------
-//                if(this.vizType === 'intersects'){
-//
-//                    var intersects = gui.addFolder('Intersects');
-//
-//                    intersects.add(options, 'drawIntersects').onChange(function(value){
-//
-//                        window.viz.optionChange('drawIntersects', value);
-//
-//                        showHideElement('intersectRadius', value);
-//                        showHideElement('doIntersectFill', value);
-//                        showHideElement('doIntersectStroke', value);
-//                    });
-//
-//                    intersects.add(options, 'intersectRadius').min(1).onChange(function(value){
-//
-//                        window.viz.optionChange('intersectRadius', value);
-//                    });
-//
-//                    intersects.add(options, 'doIntersectFill').onChange(function(value){
-//
-//                        window.viz.optionChange('doIntersectFill', value);
-//
-//                        // If we're NOT mapping frequency - show option to set circle fill colour
-//                        if(!that.options.mapFreqToColor){
-//
-//                            showHideElement('fillStyle', value);
-//                        }
-//                    });
-//
-//                    intersects.add(options, 'doIntersectStroke').onChange(function(value){
-//
-//                        window.viz.optionChange('doIntersectStroke', value);
-//
-//                        // If we're NOT mapping frequency - show option to set circle stroke colour
-//                        if(!that.options.mapFreqToColor){
-//
-//                            showHideElement('strokeStyle', value);
-//                        }
-//                    });
-//
-//                    intersects.add(options, 'drawLines').onChange(function(value){
-//
-//                        window.viz.optionChange('drawLines', value);
-//
-//                        // If we're NOT mapping frequency - show option to set line stroke colour
-//                        if(!that.options.mapFreqToColor){
-//
-//                            showHideElement('drawLineStyle', value);
-//                        }
-//                    });
-//
-//                    intersects.addColor(options, 'drawLineStyle').onChange(function(value) {
-//
-//                        // Flaw in dat.gui means values can end up to ±10 decimal places
-//                        // - which doesn't play well with setting the css rgba property... so first round the values
-//                        var roundVals = [ Math.round(value[0]), Math.round(value[1]), Math.round(value[2]) ];
-//                        window.viz.optionChange('drawLineStyle', roundVals)
-//                    });
-//
-//                    intersects.add(options, 'clipLines').onChange(function(value){
-//
-//                        window.viz.optionChange('clipLines', value);
-//                    });
-//
-//                    intersects.open();
-//                }
                 //---------------------------
 
                 if(this.vizType === 'circlesandintersects'){
@@ -606,21 +433,18 @@ define(
 
             /**
              * @description Called from index.html once we know the visualisation type
-             *              Set config vars based on the viz type
-             *              Hide/show gui elements (base on vizType or initial config settings)
+             *              Hide/show gui elements based on vizType
              *
              * @param pVizType
+             * @param pVizOptions - options values from instantiated visualization
              */
-            that.setUp = function(pVizType){
+            that.setUp = function(pVizType, pVizOptions){
+
+                this.options = pVizOptions;
 
                 this.vizType = pVizType.toLowerCase();
 
                 if(this.vizType === 'barloop'){
-
-                    this.options.ampMultiplier = 0.5;
-                    this.options.lineWidth = 3;
-                    this.options.linkAlphaToAmplitude = true;
-                    this.options.invertAlpha = true;
 
                     __hideArray.push('spacing')
                     __hideArray.push('fillStyle')
@@ -628,63 +452,18 @@ define(
 
                 if(this.vizType === 'bars'){
 
-                    this.options.numElements = 0;// will decide number based on width/spacing
-
-                    this.options.brightColors = false;
-
-                    this.options.linkAlphaToAmplitude = true;
-                    this.options.invertAlpha = true;
-
-                    this.options.linkWidthToAmplitude = true;
-
                     __hideArray.push('fillStyle')
                     __hideArray.push('lineWidth');
                 }
 
                 if(this.vizType === 'star'){
 
-                    this.options.numElements = 30;
-
-                    this.options.linkAlphaToAmplitude = true;
-                    this.options.invertAlpha = true;
-
-                    this.options.linkWidthToAmplitude = true;
-
                     __hideArray.push('spacing')
                     __hideArray.push('fillStyle')
                     __hideArray.push('lineWidth');
                 }
 
-//                if(this.vizType ==='circles' ){
-//
-//                    this.options.numElements = 0;// will decide number based on width/spacing
-//                    this.options.canvasFillAlpha = 0.1;
-//                    this.options.ampMultiplier = 0.5;
-//                    this.options.boostAmpDivider = 35;
-//                    this.options.linkAlphaToAmplitude = false;
-//                    this.options.invertAlpha = false;
-//                }
-//
-//
-//                if(this.vizType === 'intersects'){
-//
-//                    this.options.ampMultiplier = 0.5;
-//
-//                    this.options.linkAlphaToAmplitude = true;
-//                    this.options.invertAlpha = true;
-//
-//                    __hideArray.push('brightColors');
-//                    __hideArray.push('drawLineStyle');
-//                }
-
                 if(this.vizType === 'circlesandintersects'){
-
-                    this.options.numElements = 0;// will decide number based on width/spacing
-                    this.options.canvasFillAlpha = 0.1;
-                    this.options.ampMultiplier = 0.5;
-                    this.options.boostAmpDivider = 35;
-                    this.options.linkAlphaToAmplitude = false;
-                    this.options.invertAlpha = false;
 
                     __hideArray.push('brightColors');
                     __hideArray.push('drawLineStyle');
@@ -693,13 +472,6 @@ define(
 
 
                 if(this.vizType === 'rings'){
-
-                    this.options.boostAmpDivider = 5;
-                    this.options.canvasFillAlpha = 0.3;
-                    this.options.brightColors = false;
-                    this.options.linkWidthToAmplitude = true;
-                    this.options.maxLineWidth = 10;
-
 
                     __hideArray.push('spacing');
                     __hideArray.push('startPosX');

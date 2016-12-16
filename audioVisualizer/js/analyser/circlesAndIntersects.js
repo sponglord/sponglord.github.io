@@ -2,7 +2,7 @@
 define(
     [
         'utils/ObjectSuper',
-        'analyser/baseCode',
+        'avBase',
         'utils/utils2'
     ],
     function(objectSuper,
@@ -40,8 +40,8 @@ define(
                 fillStyle: [255, 255, 255],
                 strokeStyle: [255, 255, 255],
 
-                linkAlphaToAmplitude : true,
-                invertAlpha : true,
+                linkAlphaToAmplitude : false,
+                invertAlpha : false,
 
 
                 // SPECIFIC
@@ -76,7 +76,7 @@ define(
 
             that.init = function(pVizType){
 
-                __super.init(pVizType);
+                return __super.init(pVizType);
             };
 
             /////////// OVERRIDEABLE FUNCTIONS FOR SUBCLASSES TO CHANGE CORE FUNCTIONALITY /////////////

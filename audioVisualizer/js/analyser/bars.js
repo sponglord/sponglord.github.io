@@ -2,7 +2,7 @@
 define(
     [
         'utils/ObjectSuper',
-        'analyser/baseCode',
+        'avBase',
         'utils/utils2'
     ],
     function(objectSuper,
@@ -50,7 +50,7 @@ define(
 
             that.init = function(pVizType){
 
-                __super.init(pVizType);
+                return __super.init(pVizType);
 
 
 //                for(var i = 1; i < 255; i++){

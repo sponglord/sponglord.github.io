@@ -16,6 +16,7 @@ define(
 
             var defaultOptions = {
 
+                //////////////// GENERAL ///////////////////////
                 minDecibels : -90,// defaults to -100
                 maxDecibels : -40,// defaults to -30
                 smoothingTimeConstant : 0.9,// defaults to 0.8
@@ -40,7 +41,10 @@ define(
                 numElements : 0,// number of elements will be decided by width/spacing & startPosX
                 startPosX : 80,
                 spacing : 40,//  where our disks will start & how far apart our discs will be
+
                 ampMultiplier : 0.5, // multiplier on the radius of our circles
+                boostAmp : false,
+                boostAmpDivider : 5,
 
                 mapFreqToColor : true,
                 brightColors : true,
@@ -53,7 +57,6 @@ define(
 
                 linkAlphaToAmplitude : false,
                 invertAlpha : false
-
             }
 
             var that = {};
@@ -78,6 +81,8 @@ define(
                 // Set up drag &  drop
                 var element = document.getElementById('container');
                 AudioUtils.dropAndLoad(element, this.setUp, "ArrayBuffer");
+
+                return true;
             };
 
             // Once the file is loaded, we start getting our hands dirty.
@@ -110,6 +115,35 @@ define(
 
                 // Set up the audio Analyser, the Source Buffer and javascriptNode
                 this.setupAudioNodes();
+
+                AudioUtils.decodeAndPlay(pArrayBuffer, this.audioCtx, this.sourceNode, this.javascriptNode);
+            };
+
+            // Set up the audio Analyser, the Source Buffer and javascriptNode
+            that.setupAudioNodes = function(){
+
+                // Store the audio clip in our context. This is our SourceNode and we create it with createBufferSource.
+                this.sourceNode = this.audioCtx.createBufferSource();
+
+                // Creates an AnalyserNode, which can be used to expose audio time and frequency data
+                // It processes batches of audio samples from the Source Node
+                this.analyserNode = this.audioCtx.createAnalyser();
+
+                // this specifies the min & max values for the range of results when using getByteFrequencyData().
+                this.analyserNode.minDecibels = this.options.minDecibels;
+                this.analyserNode.maxDecibels = this.options.maxDecibels;
+
+                // The smoothingTimeConstant property's value defaults to 0.8; it must be in the range 0 to 1 (0 meaning no time averaging).
+                // If 0 is set, there is no averaging done, whereas a value of 1 means "overlap the previous and current buffer quite a lot while computing the value",
+                // which essentially smoothes the changes across AnalyserNode.getFloatFrequencyData/AnalyserNode.getByteFrequencyData calls.
+                // In technical terms, we apply a Blackman window and smooth the values over time. The default value is good enough for most cases.
+                this.analyserNode.smoothingTimeConstant = this.options.smoothingTimeConstant;
+
+                this.analyserNode.fftSize = this.options.fftSize;
+
+
+                // the javascriptNode aka scriptProcessor takes the output of the analyserNode and makes it available to our js code outside of the AudioContext
+                this.javascriptNode = this.audioCtx.createScriptProcessor(this.options.sampleSize, 1, 1);
 
                 // Setup the event handler that is called whenever the analyserNode node tells the javascriptNode that a new batch of samples have been processed
                 this.javascriptNode.onaudioprocess = function(){
@@ -145,35 +179,6 @@ define(
                         requestAnimationFrame(that.processData);
                     }
                 }
-
-                AudioUtils.decodeAndPlay(pArrayBuffer, this.audioCtx, this.sourceNode, this.javascriptNode);
-            };
-
-            // Set up the audio Analyser, the Source Buffer and javascriptNode
-            that.setupAudioNodes = function(){
-
-                // Store the audio clip in our context. This is our SourceNode and we create it with createBufferSource.
-                this.sourceNode = this.audioCtx.createBufferSource();
-
-                // Creates an AnalyserNode, which can be used to expose audio time and frequency data
-                // It processes batches of audio samples from the Source Node
-                this.analyserNode = this.audioCtx.createAnalyser();
-
-                // this specifies the min & max values for the range of results when using getByteFrequencyData().
-                this.analyserNode.minDecibels = this.options.minDecibels;
-                this.analyserNode.maxDecibels = this.options.maxDecibels;
-
-                // The smoothingTimeConstant property's value defaults to 0.8; it must be in the range 0 to 1 (0 meaning no time averaging).
-                // If 0 is set, there is no averaging done, whereas a value of 1 means "overlap the previous and current buffer quite a lot while computing the value",
-                // which essentially smoothes the changes across AnalyserNode.getFloatFrequencyData/AnalyserNode.getByteFrequencyData calls.
-                // In technical terms, we apply a Blackman window and smooth the values over time. The default value is good enough for most cases.
-                this.analyserNode.smoothingTimeConstant = this.options.smoothingTimeConstant;
-
-                this.analyserNode.fftSize = this.options.fftSize;
-
-
-                // the javascriptNode aka scriptProcessor takes the output of the analyserNode and makes it available to our js code outside of the AudioContext
-                this.javascriptNode = this.audioCtx.createScriptProcessor(this.options.sampleSize, 1, 1);
 
                 ////////////////// BYTES vs FLOATS //////////////////////////////////////////////
                 // Create the array for the data produed by the analysis
@@ -214,7 +219,7 @@ define(
                 }
 
 //		        if(window.console && console.log){
-//                  console.log('### localAudioVisualiser_songDna_1::draw:: dt=', dt);
+//                  console.log('### localAudioVisualiser_songDna_1::draw:: this.elapsedTime=', this.elapsedTime);
 //                  console.log('### localAudioVisualiser_songDna_1::draw:: visualising batchNum =', batchCount);
 //              }
 

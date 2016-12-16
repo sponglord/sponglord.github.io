@@ -15,18 +15,26 @@
                 var src = 'analyser/' + e.target.value;
 
                 require([src],
-                        function(Analyser){
+                    function(Analyser){
 
-                            var vizTypes = document.getElementsByTagName('option');
-                            var vizType = vizTypes[e.target.selectedIndex].value;
+                        var vizTypes = document.getElementsByTagName('option');
+                        var vizType = vizTypes[e.target.selectedIndex].value;
 
-                            var viz = new Analyser();
-                            viz.init(vizType);
+                        var viz = new Analyser();
+                        var initSuccess = viz.init(vizType);
 
-                            window.viz = viz;
+                        var vizOptions = viz.options;
+
+                        window.viz = viz;
+
+                        if(window.console && console.log){
+                            console.log('### index::init:: initSuccess=',initSuccess);
+                        }
+
+                        if(initSuccess){
 
                             // set up & intialise options gui
-                            window.drawOptions.setUp(vizType);
+                            window.drawOptions.setUp(vizType, vizOptions);
 
                             var instr = document.getElementById('instructions');
 
@@ -40,12 +48,11 @@
                             container.classList.add('phaseTwo');
 
                             document.getElementById('canvas').style.display = 'block';
-
-
-//                            document.getElementById('options').style.display = 'block';
                         }
-                );
-            };
+
+                    }
+                );//require
+            };//vizChange
 
         })();
     </script>
@@ -53,7 +60,6 @@
 <body>
     <div id="options" class="draw-options-holder"></div><!-- #options -->
     <div id="container">
-
 
         <div id="canvas-container">
             <canvas width=1100 height=800 id="canvas"></canvas>
@@ -63,7 +69,7 @@
             <div class="styled-select">
                 <select id="selector" onchange="vizChange(event);">
                     <option>Select a visualisation effect</option>
-                    <!--<option value="baseCode">Base require</option>-->
+                    <option value="baseCode_mic">Base require</option>
                     <!--<option value="fatArcs">Fat arcs require</option>-->
                     <option value="circlesAndIntersects">Circles & Intersects</option>
                     <option value="bars">Bars</option>

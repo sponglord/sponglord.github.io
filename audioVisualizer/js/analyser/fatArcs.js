@@ -2,7 +2,7 @@
 define(
     [
         'utils/ObjectSuper',
-        'analyser/baseCode',
+        'avBase',
         'utils/utils2'
     ],
     function(objectSuper,
@@ -33,7 +33,7 @@ define(
 
             that.init = function(){
 
-                __super.init();
+                return __super.init();
             };
 
             /////////// OVERRIDEABLE FUNCTIONS FOR SUBCLASSES TO CHANGE CORE FUNCTIONALITY /////////////
