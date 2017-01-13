@@ -71,7 +71,7 @@ define(
 //                defaultOptions.canvasFillStyle = [27, 218, 218];
 //                defaultOptions.canvasFillAlpha = 0.25;
 //                defaultOptions.numElements = 145;
-                defaultOptions.mapFreqToColor = false;
+//                defaultOptions.mapFreqToColor = false;
                 //--
 
                 var init = __super.init(pVizType);
