@@ -299,9 +299,9 @@ define(
                     _images.push(imageObj);
                 }
 
-                if(window.console && console.log){
-                    console.log('### waves1::createImages:: _images.length=',_images.length);
-                }
+//                if(window.console && console.log){
+//                    console.log('### waves1::createImages:: _images.length=',_images.length);
+//                }
             };
 
             that.checkForCollision = function(){
