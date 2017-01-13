@@ -16,7 +16,6 @@ define(
 
             var defaultOptions = {
 
-                //////////////// GENERAL ///////////////////////
                 minDecibels : -90,// defaults to -100
                 maxDecibels : -40,// defaults to -30
                 smoothingTimeConstant : 0.9,// defaults to 0.8
@@ -57,6 +56,7 @@ define(
 
                 linkAlphaToAmplitude : false,
                 invertAlpha : false
+
             }
 
             var that = {};
@@ -80,14 +80,27 @@ define(
 
                 this.setUp();
 
-                // Set up drag &  drop
-                var element = document.getElementById('container');
-                AudioUtils.dropAndLoad(element, this.start, "ArrayBuffer");
+                /////////////// DRAG 'N DROP //////////////////////
+//                var element = document.getElementById('container');
+//                AudioUtils.dropAndLoad(element, this.setUp, "ArrayBuffer");
+                //--------- end DRAG 'N DROP ----------------------
+
+
+                /////////////// MICROPHONE //////////////////////
+                var inputSuccess = AudioUtils.setUpAudioInput(this.start);
+
+                if(!inputSuccess){
+
+                    document.getElementById('instructions').innerHTML = 'You need to try another browser - like Chrome or Firefox';
+                    document.getElementById('canvas-container').classList.remove('phaseTwo');
+                    return false;
+                }
+                //----------- end MICROPHONE -------------------
 
                 return true;
             };
 
-            that.setUp = function(){
+            that.setUp = function(pArrayBuffer){
 
                 // Canvas and drawing config
                 var canvas = document.getElementById('canvas');
@@ -113,9 +126,12 @@ define(
                 // Create a new 'audioContext'
                 this.audioCtx = new AudioContext();
 
+                /////////////// DRAG 'N DROP //////////////////////
                 // Set up the audio Analyser, the Source Buffer and javascriptNode
-                this.setupAudioNodes();
-            };
+//                this.setupAudioNodes();
+                //--------- end DRAG 'N DROP ----------------------
+
+            }
 
             // Once the file is loaded, we start getting our hands dirty.
             that.start = function(pArrayBuffer){
@@ -123,14 +139,43 @@ define(
                 document.getElementById('instructions').innerHTML = 'Loading ...';
                 document.getElementById('canvas-container').classList.remove('phaseTwo');
 
-                AudioUtils.decodeAndPlay(pArrayBuffer, this.audioCtx, this.sourceNode, this.javascriptNode);
+
+                /////////////// DRAG 'N DROP //////////////////////
+                // Set up the audio Analyser, the Source Buffer and javascriptNode
+//                AudioUtils.decodeAndPlay(pArrayBuffer, this.audioCtx, this.sourceNode, this.javascriptNode);
+                //--------- end DRAG 'N DROP ----------------------
+
+
+                /////////////// MICROPHONE //////////////////////
+                this.setupAudioNodes(pArrayBuffer);
+
+                document.getElementById('instructions').innerHTML = '';
+                document.getElementById('instructions').style.display = 'none';
+                console.log('--------------- audio has started ----------------');
+
+                AudioUtils.lastTime = Date.now();
+                AudioUtils.audioPlaying = true;
+                //----------- end MICROPHONE -------------------
             };
 
             // Set up the audio Analyser, the Source Buffer and javascriptNode
-            that.setupAudioNodes = function(){
+            that.setupAudioNodes = function(pArrayBuffer){
 
-                // Store the audio clip in our context. This is our SourceNode and we create it with createBufferSource.
-                this.sourceNode = this.audioCtx.createBufferSource();
+                if(pArrayBuffer){
+
+                    /////////////// MICROPHONE //////////////////////
+
+                    // Create an AudioNode from the stream.
+                    this.sourceNode = this.audioCtx.createMediaStreamSource( pArrayBuffer );
+
+                }else{
+
+                    /////////////// DRAG 'N DROP //////////////////////
+
+                    // Store the audio clip in our context. This is our SourceNode and we create it with createBufferSource.
+                    this.sourceNode = this.audioCtx.createBufferSource();
+                }
+
 
                 // Creates an AnalyserNode, which can be used to expose audio time and frequency data
                 // It processes batches of audio samples from the Source Node
@@ -226,9 +271,9 @@ define(
                 }
 
 //		        if(window.console && console.log){
-//                  console.log('### localAudioVisualiser_songDna_1::draw:: this.elapsedTime=', this.elapsedTime);
-//                  console.log('### localAudioVisualiser_songDna_1::draw:: visualising batchNum =', batchCount);
-//              }
+//                    console.log('### localAudioVisualiser_songDna_1::draw:: this.elapsedTime=', this.elapsedTime);
+//                    console.log('### localAudioVisualiser_songDna_1::draw:: visualising batchNum =', this.batchCount);
+//                }
 
 
                 // NOTE: soundData.length always equals this.analyserNode.fftSize / 2

@@ -18,14 +18,15 @@ define(
 
                 // general
                 numFrequencies : 512,
-                batchModulo : 1,
-                canvasFillAlpha : 0.1,
+                batchModulo : 10,
+
+                startPosX : 60,
+                spacing : 60,
+                canvasFillAlpha : 0.5,
 
                 // DRAW OPTIONS
-                numElements : 50,
-                spacing : 20,
 
-                ampMultiplier : 1,
+                ampMultiplier : 0.2,
                 boostAmp : false,
                 boostAmpDivider : 5,
 
@@ -39,11 +40,11 @@ define(
                 invertAlpha : true,
 
                 // specific
-                linkWidthToAmplitude : true,
+                linkWidthToAmplitude : false,
                 maxLineWidth: 20
             }
 
-            var posX = null;
+            var posX, storedStartAngle, lastRadius;
 
             var that = baseCode(defaultOptions);
 
@@ -52,13 +53,6 @@ define(
             that.init = function(pVizType){
 
                 return __super.init(pVizType);
-
-
-//                for(var i = 1; i < 255; i++){
-//                    if(window.console && console.log){
-//                        console.log('### bars::preLoopAction:: log ',i, '=',Math.log2(i));
-//                    }
-//                }
             };
 
             /////////// OVERRIDEABLE FUNCTIONS FOR SUBCLASSES TO CHANGE CORE FUNCTIONALITY /////////////
@@ -75,10 +69,13 @@ define(
 
             that.preLoopAction = function(){
 
-                posX = this.options.startPosX;
-
                 // reset the canvas, with a reduced alpha to leave traces of the last draw
                 __super.preLoopAction();
+
+                posX = this.options.startPosX;
+
+                storedStartAngle = Math.PI;
+                lastRadius = 0;
             }
 
             that.loop = function(pNumSamples){
@@ -86,7 +83,7 @@ define(
                 Utils.loopOverBins(pNumSamples, this.binSize, this.soundData, this.draw, this);
             };
 
-            that.postLoopAction = function(){}
+            that.postLoopAction = function(){ }
 
             //--- end OVERRIDEABLE FUNCTIONS FOR SUBCLASSES TO CHANGE CORE FUNCTIONALITY -------------
 
@@ -122,7 +119,7 @@ define(
 
                 /////////////// SET COLOR /////////////////
 
-//                this.canvCtx.fillStyle = this.options.fillStyle;
+
                 var strokeStyle = this.options.strokeStyle
                 this.canvCtx.strokeStyle = 'rgba(' + strokeStyle[0] + ','  + strokeStyle[1] + ',' + strokeStyle[2] + ',' + alpha + ')';
 
@@ -148,24 +145,7 @@ define(
                         chosenRGB = rgbBright;
                     }
 
-//                    this.canvCtx.fillStyle = 'rgba(' + chosenRGB[0] + ','  + chosenRGB[1] + ',' + chosenRGB[2] + ',' + alpha + ')';
-                    this.canvCtx.strokeStyle = 'rgba(' + chosenRGB[0] + ','  + chosenRGB[1] + ',' + chosenRGB[2] + ',' + alpha + ')';
-                }
-
-
-                // Draw each disk
-//                this.canvCtx.lineWidth = 1;
-//                this.canvCtx.beginPath();
-//                this.canvCtx.arc(posX, this.centerY, pAmplitude * (this.options.sizeMultiplier / 7), 0, Math.PI * 2, false);
-//                this.canvCtx.stroke();
-
-
-
-                // DRAW BARS
-                this.canvCtx.lineWidth = this.options.lineWidth;
-                if(this.options.linkWidthToAmplitude){
-
-                    this.canvCtx.lineWidth = Math.floor(Utils.lerp(ampNorm, 0, this.options.maxLineWidth));
+                    this.canvCtx.strokeStyle = 'rgba(' + chosenRGB[0] + ','  + chosenRGB[1] + ',' + chosenRGB[2] + ',' + alpha + ')';;
                 }
 
 
@@ -179,33 +159,92 @@ define(
                     multiplier = (log > 0 && log > this.options.ampMultiplier)? log : this.options.ampMultiplier
                 }
 
-                var barHeight = pAmplitude * multiplier;
+                // ARCS
+
+                this.canvCtx.lineWidth = 1;
+
+//                if(this.batchCount % 100 === 0){
+//                    this.canvCtx.strokeStyle = 'rgba(' + 0 + ','  + 0 + ',' + 0 + ',' + 0.5 + ')';// 0.5 -- 1
+//                }
+
+                var heads = i%2;//Math.round(Utils.randomNumberInRange(0, 1));
+
+                // Start anywhere on a circle
+                var randAngle = storedStartAngle;//(heads === 0)? Utils.randomNumberInRange(0, Math.PI) : Utils.randomNumberInRange(Math.PI, Math.PI * 2);
 
 
-                this.canvCtx.beginPath();
-                this.canvCtx.moveTo(posX, this.centerY - (barHeight / 2) );
-                this.canvCtx.lineTo(posX, this.centerY + (barHeight / 2) );
-                this.canvCtx.stroke();
+                var endRads = (210 * Math.PI) / 180;// 120 degs = (Math.PI * 2)/3, 270 degs = (Math.PI * 3) / 2
+
+                // Go from that point to a max of endRads degrees depending on amplitude
+                var endAngle = (heads === 0)? randAngle + Utils.lerp(ampNorm, 0, endRads) : randAngle - Utils.lerp(ampNorm, 0, endRads);
 
 
-                posX += this.options.spacing;
+                var numSegments = Utils.lerp(ampNorm, 3, 8); // 5
+
+                var arcSize = (endAngle - randAngle) / numSegments;
+
+
+                var posY = this.centerY;//Utils.randomIntInRange(30, canvH - 30);
+
+
+                // Draw each arc
+                var arcStart = randAngle, arcEnd = 0;
+
+//                this.canvCtx.beginPath();
+////                this.canvCtx.arc(posX, posY, pAmplitude * multiplier, arcStart, endAngle, false);// CW
+//                this.canvCtx.arc(posX, posY, pAmplitude * multiplier, arcStart,  endAngle, true);// CCW
+//                this.canvCtx.stroke();
+
+
+                for(var i = 0; i < numSegments; i++){
+
+                    arcEnd = arcStart + arcSize;
+
+                    this.canvCtx.beginPath();
+
+                    if(heads === 0){
+
+                        this.canvCtx.lineWidth = numSegments - i; // fat to thin
+                        this.canvCtx.arc(posX, posY, pAmplitude * multiplier, arcStart, arcEnd, false);// CW
+
+                    }else{
+
+                        this.canvCtx.lineWidth = i; // thin to fat
+                        this.canvCtx.arc(posX, posY, pAmplitude * multiplier, arcStart, arcEnd, true);// CCW
+                    }
+
+
+                    this.canvCtx.stroke();
+
+                    arcStart = arcEnd;
+                }
+
+
+
+//                var wobble = NN.utils.randomIntInRange(-wobbleAmt, wobbleAmt);
+//                posX += this.options.spacing;
+
+                posX += lastRadius + (pAmplitude * multiplier);
+
+                storedStartAngle = endAngle - Math.PI;
+                lastRadius = pAmplitude * multiplier;
 
                 return true;
             }
 
-            that.optionChange = function(pOpt, pVal){
-
-                __super.optionChange(pOpt, pVal);
-
-                switch(pOpt){
-
-                    case 'numElements':
-
-                        this.binSize = this.options.numElements = pVal;
-
-                        break
-                }
-            };
+//            that.optionChange = function(pOpt, pVal){
+//
+//                __super.optionChange(pOpt, pVal);
+//
+//                switch(pOpt){
+//
+//                    case 'numElements':
+//
+//                        this.binSize = this.options.numElements = pVal;
+//
+//                        break
+//                }
+//            };
 
             return that;
         }
