@@ -7,7 +7,7 @@
     <title>Checkout SDK Test</title>
     <script src="test/lib/jquery-2.1.4.min.js"></script>
     <script src="dist/checkoutSDK.1.2.3.js"></script>
-    <script src="./src/utils/apple-pay-stubs.js"></script>
+<!--    <script src="./src/utils/apple-pay-stubs.js"></script>-->
 <!--    <script type="text/javascript" src="http://localhost:8080/checkoutshopper/assets/js/sdk/checkoutSDK.1.2.3.js"></script>-->
 <!--    <script src="https://checkoutshopper-test.adyen.com/checkoutshopper/assets/js/sdk/checkoutSecuredFields.1.1.1.js"></script>-->
 
