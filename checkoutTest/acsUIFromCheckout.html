@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ACS UI</title>
+    <script src="../lib/jquery-2.1.4.min.js"></script>
+    <style>
+        h1{
+            margin: 0px;
+            font-family: "Open Sans", sans-serif;
+            font-size: 25px;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        .my-submit-btn{
+            margin-top: 20px;
+            display: block;
+        }
+
+        .container {
+            margin: 0 auto;
+            width: 40%;
+        }
+
+        @media only screen and (max-width: 667px) {
+            .container {
+                width: 100%;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <input type="button" id="submitBtn" class="my-submit-btn" value="Submit challenge data"/>
+    </div>
+    <script type="text/javascript">
+
+        var $ = jQuery;// for IE8
+
+        $(document).ready(function() {
+
+            $('#submitBtn').on('click', function(){
+
+                const form = document.createElement( 'form' );
+                form.style.display = 'none';
+                form.name = 'cResForm';
+                form.action = 'https://php-71-simon.seamless-checkout.com/nick/test/modules/notification.php';// 3DS Notification URL
+                form.method = "POST";
+                form.target = '_self';
+                const input = document.createElement( 'input' );
+                input.name = "cRes";
+                input.tranStatus = 'Y';
+                form.appendChild( input );
+                document.body.appendChild( form );
+                form.submit();
+
+                setTimeout( function () {
+                    document.body.removeChild( form );
+                }, 1000 );
+            });
+
+        });
+        </script>
+</body>
+</html>
