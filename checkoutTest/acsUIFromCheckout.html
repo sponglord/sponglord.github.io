@@ -48,6 +48,8 @@
 
             $('#submitBtn').on('click', function(){
 
+                window.console.log('### acsUIFromCheckout:::: val=',$('#transactionSuccess').val());
+
                 const form = document.createElement( 'form' );
                 form.style.display = 'none';
                 form.name = 'cResForm';
