@@ -58,7 +58,7 @@
                 form.target = '_self';
                 const input = document.createElement( 'input' );
                 input.name = "cRes";
-                input.tranStatus =  $('#transactionSuccess').val();
+                input.value =  $('#transactionSuccess').val();
                 form.appendChild( input );
                 document.body.appendChild( form );
                 form.submit();
