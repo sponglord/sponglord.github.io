@@ -37,6 +37,7 @@
 </head>
 <body>
     <div class="container">
+        <input type="text" id="transactionSuccess" value="Y"/>
         <input type="button" id="submitBtn" class="my-submit-btn" value="Submit challenge data"/>
     </div>
     <script type="text/javascript">
@@ -55,7 +56,7 @@
                 form.target = '_self';
                 const input = document.createElement( 'input' );
                 input.name = "cRes";
-                input.tranStatus = 'Y';
+                input.tranStatus =  $('#transactionSuccess').val();
                 form.appendChild( input );
                 document.body.appendChild( form );
                 form.submit();
