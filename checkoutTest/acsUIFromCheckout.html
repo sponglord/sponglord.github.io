@@ -62,7 +62,7 @@
                 form.target = '_self';
                 const input = document.createElement( 'input' );
                 input.name = "cRes";
-                input.value =  $('#transactionSuccess').val();
+                input.value =  $('#transactionSuccess').val().toUpperCase();
                 form.appendChild( input );
                 document.body.appendChild( form );
                 form.submit();
