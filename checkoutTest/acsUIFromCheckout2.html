@@ -37,7 +37,7 @@
 </head>
 <body>
 <div class="container" style="margin: 10px">
-    <div style="font-family: sans-serif; font-size: 12px">Second iframe with content running on the ACS URL</div>
+    <div style="font-family: sans-serif; font-size: 12px">iframe with content running on the ACS URL (github)</div>
     <div style="border: 1px solid black; padding: 5px;width: 90%;margin-top: 5px;">
         <span style="font-family: sans-serif; font-size: 12px">Transaction Status:</span>
         <input type="text" id="transactionSuccess" value="Y" style="width:20px; text-transform:uppercase;"/>
@@ -48,7 +48,9 @@
 
         var $ = jQuery;// for IE8
 
+        // Mock NotificationURL - in this scenario it needs to include the merchant's domain as a GET param
         var encodedDomain = encodeURIComponent('http://localhost:8011');
+        var notificationURL = 'https://php-71-simon.seamless-checkout.com/nick/test/modules/notification2.php?returnURL=' + encodedDomain;
 
         $(document).ready(function() {
 
@@ -59,8 +61,7 @@
                 const form = document.createElement( 'form' );
                 form.style.display = 'none';
                 form.name = 'cResForm';
-//                form.action = 'https://php-71-simon.seamless-checkout.com/nick/test/modules/notification.php';// 3DS Notification URL
-                form.action = 'https://php-71-simon.seamless-checkout.com/nick/test/modules/notification2.php?returnURL=' + encodedDomain;// 3DS Notification URL
+                form.action = notificationURL;// 3DS Notification URL
                 form.method = "POST";
                 form.target = '_self';
                 const input = document.createElement( 'input' );
