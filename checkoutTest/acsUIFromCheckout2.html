@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ACS UI</title>
+    <script src="../audioVisualizer/js/lib/jquery-3.1.1.min.js"></script>
+    <style>
+        h1{
+            margin: 0px;
+            font-family: "Open Sans", sans-serif;
+            font-size: 25px;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        .my-submit-btn{
+            margin-top: 20px;
+            display: block;
+        }
+
+        .container {
+            margin: 0 auto;
+            width: 40%;
+        }
+
+        @media only screen and (max-width: 667px) {
+            .container {
+                width: 100%;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div class="container" style="margin: 10px">
+    <div style="font-family: sans-serif; font-size: 12px">Second iframe with content running on the ACS URL</div>
+    <div style="border: 1px solid black; padding: 5px;width: 90%;margin-top: 5px;">
+        <span style="font-family: sans-serif; font-size: 12px">Transaction Status:</span>
+        <input type="text" id="transactionSuccess" value="Y" style="width:20px; text-transform:uppercase;"/>
+        <input type="button" id="submitBtn" class="my-submit-btn" value="Submit challenge data"/>
+    </div>
+</div>
+    <script type="text/javascript">
+
+        var $ = jQuery;// for IE8
+
+        var encodedDomain = encodeURIComponent('http://localhost:8011');
+
+        $(document).ready(function() {
+
+            $('#submitBtn').on('click', function(){
+
+                window.console.log('### acsUIFromCheckout:::: val=',$('#transactionSuccess').val());
+
+                const form = document.createElement( 'form' );
+                form.style.display = 'none';
+                form.name = 'cResForm';
+//                form.action = 'https://php-71-simon.seamless-checkout.com/nick/test/modules/notification.php';// 3DS Notification URL
+                form.action = 'https://php-71-simon.seamless-checkout.com/nick/test/modules/notification2.php?returnURL=' + encodedDomain;// 3DS Notification URL
+                form.method = "POST";
+                form.target = '_self';
+                const input = document.createElement( 'input' );
+                input.name = "cRes";
+                input.value =  $('#transactionSuccess').val().toUpperCase();
+                form.appendChild( input );
+                document.body.appendChild( form );
+                form.submit();
+
+                setTimeout( function () {
+                    document.body.removeChild( form );
+                }, 1000 );
+            });
+
+        });
+        </script>
+</body>
+</html>
