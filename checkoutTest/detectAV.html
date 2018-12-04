@@ -64,9 +64,11 @@
         var inputEl = document.querySelector('#adyKspSMTest');
         if(window.console && window.console.log){
             window.console.log('### detectAV::inputEl:: ',inputEl);
-            window.console.log('### detectAV::parent:: ',window.parent);
-            window.console.log('### detectAV::parent.location:: ',window.parent.location);
+            window.console.log('### detectAV::parent:: ',parent);
+            window.console.log('### detectAV::parent.location:: ',parent.location);
         }
+
+        parent.postMessage('ffffff', '*')
 
         if(inputEl){
 //            window.parent.globalIframeClose();
