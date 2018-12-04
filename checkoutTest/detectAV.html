@@ -68,10 +68,9 @@
             window.console.log('### detectAV::parent.location:: ',parent.location);
         }
 
-        parent.postMessage('ffffff', '*')
-
         if(inputEl){
-            window.parent.globalIframeClose();
+
+            parent.postMessage('test iframe loaded', '*')
         }
     </script>
 </html>
