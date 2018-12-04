@@ -4,7 +4,6 @@
     <meta http-Equiv="Cache-Control" Content="no-cache" />
     <meta http-Equiv="Pragma" Content="no-cache" />
     <meta http-Equiv="Expires" Content="0" />
-    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">-->
     <meta charset="UTF-8">
     <style>
         * {
@@ -19,7 +18,7 @@
             "Segoe UI", "Roboto", "Oxygen",
             "Ubuntu", "Cantarell", "Fira Sans",
             "Droid Sans", "Helvetica Neue", sans-serif;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 200;
         }
 
@@ -73,49 +72,18 @@
         #shiftTabField{
             display: block;
         }
-
-        /*.is-ios * {
-            cursor: pointer;
-        }*/
-
     </style>
-    <script type="text/javascript">
-
-        // MOCK THE VARS THAT WOULD BE IN THE ASSET FILE IF IT WAS SERVED CORRECTLY /////////
-        window.adyen = window.adyen || {};
-
-        //TODO --- CHANGE VALUES FOR IE TESTING
-        window.origin = 'http://localhost:8011';
-//        window.origin = 'http://192.168.20.55:8011';// works across localhost & IE VM - but not offline
-        //TODO ---
-        window.originKey = 'pub2.dfdh';
-        window.genTime = new Date().toISOString();
-        //TODO --- CHANGE VALUES FOR IE TESTING
-        window.checkoutShopperUrl = 'http://localhost:8011/';
-//        window.checkoutShopperUrl = 'http://192.168.20.55:8011/';// works across localhost & IE VM - but not offline
-        //TODO ---
-        // end MOCK ------------------------------------------------------------------------
-
-        // DEBUG FLAGS
-        window._b$dl = false;
-        window.__logIOSEvents = false;
-        window.__logVal2 = false;
-        //
-    </script>
-    <script type="text/javascript" src="./tempCse_v23_expanded.js"></script>
-    <!--<script type="text/javascript" src="./secured-fields.2.0.3.js"></script>-->
+    <script type="text/javascript" src="https://test.adyen.com/hpp/cse/js/8714289145368445.shtml"></script>
+    <script type="text/javascript" src="../../js/pub.v2.8714289145368445.aHR0cHM6Ly9waHAtNzEtc2ltb24uc2VhbWxlc3MtY2hlY2tvdXQuY29t.imNGwnCfTYhgVYXAew6tTEzMUln-3NiUYWCZ-G_PAIU/securedFields.2.0.2.beta.min.js"></script>
 </head>
-    <body>
-    <input id="shiftTabField" style="height: 1px; width: 1px; position: absolute; top: -1px;" tabindex="-1" autocomplete="off" >
-    <input class="js-iframe-input input-field" id="encryptedCardNumber" autocomplete="cc-number" data-encrypted-name="number" type="tel" placeholder="1111 2222 3333 4444" aria-placeholder="1111 2222 3333 4444" size="20" aria-label="Credit or debit card number"/>
-    <input class="js-iframe-input date-field input-field" id="encryptedExpiryDate" type="tel" placeholder="MM/YY" aria-placeholder="MM/YY" autocomplete="cc-exp" maxLength="5" aria-label="Credit or debit card expiration date"/>
-    <input class="js-iframe-input date-field input-field" id="encryptedExpiryMonth" data-encrypted-name="expiryMonth" type="tel" placeholder="MM" aria-placeholder="MM" autocomplete="cc-exp-month" maxLength="2" aria-label="Credit or debit card expiration month - 2 digits"/>
-    <input class="js-iframe-input date-field input-field" id="encryptedExpiryYear" type="tel" placeholder="YY"  aria-placeholder="YY" autocomplete="cc-exp-year" maxLength="2" aria-label="Credit or debit card expiration year - 2 digits"/>
-    <input class="js-iframe-input cvc-field input-field" id="encryptedSecurityCode" data-encrypted-name="cvc" type="tel" placeholder="1234"  aria-placeholder="1234" autocomplete="cc-csc" maxLength="4" aria-label="Credit or debit card CVC/CVV"/>
-    <input type="hidden" id="expiryMonth" data-encrypted-name="expiryMonth"/>
-    <input type="hidden" id="expiryYear" data-encrypted-name="expiryYear"/>
-    <!--<script type="text/javascript">
-//        document.querySelector('html').classList.add('is-ios');
-    </script>-->
-    </body>
+<body>
+<input id="shiftTabField" style="height: 1px; width: 1px; position: absolute; top: -1px;" tabindex="-1" autocomplete="off" >
+<input class="js-iframe-input input-field" id="encryptedCardNumber" autocomplete="cc-number" data-encrypted-name="number" type="tel" placeholder="1111 2222 3333 4444" size="20"/>
+<input class="js-iframe-input date-field input-field" id="encryptedExpiryDate" type="tel" placeholder="MM/YY" autocomplete="cc-exp" maxLength="5"/>
+<input class="js-iframe-input date-field input-field" id="encryptedExpiryMonth" data-encrypted-name="expiryMonth" type="tel" placeholder="MM" autocomplete="cc-exp-month" maxLength="2"/>
+<input class="js-iframe-input date-field input-field" id="encryptedExpiryYear" type="tel" placeholder="YY" autocomplete="cc-exp-year" maxLength="2"/>
+<input class="js-iframe-input cvc-field input-field" id="encryptedSecurityCode" data-encrypted-name="cvc" type="tel" placeholder="1234" autocomplete="cc-csc" maxLength="4"/>
+<input type="hidden" id="expiryMonth" data-encrypted-name="expiryMonth"/>
+<input type="hidden" id="expiryYear" data-encrypted-name="expiryYear"/>
+</body>
 </html>
