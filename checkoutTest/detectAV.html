@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-Equiv="Cache-Control" Content="no-cache" />
+    <meta http-Equiv="Pragma" Content="no-cache" />
+    <meta http-Equiv="Expires" Content="0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            border: none;
+            background-color: #88cf88;
+            font-family: -apple-system, BlinkMacSystemFont,
+            "Segoe UI", "Roboto", "Oxygen",
+            "Ubuntu", "Cantarell", "Fira Sans",
+            "Droid Sans", "Helvetica Neue", sans-serif;
+            font-size: 15px;
+            font-weight: 200;
+        }
+
+        html,
+        body,
+        input{
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%
+        }
+
+        input::-ms-clear {
+            display: none;
+        }
+
+        input::-webkit-input-placeholder {
+            color: #b3b3b3;
+        }
+
+        input::-moz-placeholder {
+            color: #b3b3b3;
+        }
+        input:-ms-input-placeholder {
+            color: #b3b3b3;
+        }
+        input:-moz-placeholder {
+            color: #b3b3b3;
+        }
+
+        :focus {
+            outline: 0
+        }
+
+    </style>
+</head>
+    <body>
+        <input id="adyKspSMTest" autocomplete="cc-number" data-encrypted-name="number" type="tel" placeholder="1111 2222 3333 4444" aria-placeholder="1111 2222 3333 4444" size="20" aria-label="Credit or debit card number"/>
+    </body>
+    <script type="text/javascript">
+        var inputEl = document.querySelector('#adyKspSMTest');
+        if(window.console && window.console.log){
+            window.console.log('### detectAV::inputEl:: ',inputEl);
+            window.console.log('### detectAV::parent:: ',window.parent);
+        }
+
+        if(inputEl){
+            window.parent.globalIframeClose();
+        }
+    </script>
+</html>
