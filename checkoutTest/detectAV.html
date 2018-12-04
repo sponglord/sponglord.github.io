@@ -59,6 +59,13 @@
 </head>
     <body>
         <input id="adyKspSMTest" autocomplete="cc-number" data-encrypted-name="number" type="tel" placeholder="1111 2222 3333 4444" aria-placeholder="1111 2222 3333 4444" size="20" aria-label="Credit or debit card number"/>
+        <input class="js-iframe-input input-field" id="encryptedCardNumber" autocomplete="cc-number" data-encrypted-name="number" type="tel" placeholder="1111 2222 3333 4444" aria-placeholder="1111 2222 3333 4444" size="20" aria-label="Credit or debit card number"/>
+        <input class="js-iframe-input date-field input-field" id="encryptedExpiryDate" type="tel" placeholder="MM/YY" aria-placeholder="MM/YY" autocomplete="cc-exp" maxLength="5" aria-label="Credit or debit card expiration date"/>
+        <input class="js-iframe-input date-field input-field" id="encryptedExpiryMonth" data-encrypted-name="expiryMonth" type="tel" placeholder="MM" aria-placeholder="MM" autocomplete="cc-exp-month" maxLength="2" aria-label="Credit or debit card expiration month - 2 digits"/>
+        <input class="js-iframe-input date-field input-field" id="encryptedExpiryYear" type="tel" placeholder="YY"  aria-placeholder="YY" autocomplete="cc-exp-year" maxLength="2" aria-label="Credit or debit card expiration year - 2 digits"/>
+        <input class="js-iframe-input cvc-field input-field" id="encryptedSecurityCode" data-encrypted-name="cvc" type="tel" placeholder="1234"  aria-placeholder="1234" autocomplete="cc-csc" maxLength="4" aria-label="Credit or debit card CVC/CVV"/>
+        <input type="hidden" id="expiryMonth" data-encrypted-name="expiryMonth"/>
+        <input type="hidden" id="expiryYear" data-encrypted-name="expiryYear"/>
     </body>
     <script type="text/javascript">
         var inputEl = document.querySelector('#adyKspSMTest');
@@ -70,7 +77,7 @@
 
         if(inputEl){
 
-            parent.postMessage('uftu_jgsbnf_mpbefe', '*');//TODO target origin
+            parent.postMessage('uftu_jgsbnf_mpbefe', '*');//TODO provide target origin
         }
     </script>
 </html>
