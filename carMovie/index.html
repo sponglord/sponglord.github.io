@@ -15,7 +15,6 @@
     	}
     	video:focus {
     		outline: none;
-    		    		height: 360;
     	}
     </style>
 </head>
@@ -28,18 +27,36 @@
 	</div>
 	<script type="text/javascript">
 		var vidWidth = 960;
-		var vidHeigth = 540;
-		if(window.innerWidth < 641){
-			vidWidth = 640;
-			vidHeight = 360;
-			var vid = document.querySelector('video');
-			vid.setAttribute('width', vidWidth);
-			vid.setAttribute('height', vidHeight);
+		var vidHeight = 540;
+		var vid = document.querySelector('video');
+
+		function resizeVideo(){
+
+			var winWidth = window.innerWidth;
+
+			if(winWidth < 481){
+				vidWidth = 480;
+				vidHeight = 270;
+				vid.setAttribute('width', vidWidth);
+				vid.setAttribute('height', vidHeight);
+				return;
+			}
+
+			if(winWidth < 641){
+				vidWidth = 640;
+				vidHeight = 360;
+				vid.setAttribute('width', vidWidth);
+				vid.setAttribute('height', vidHeight);
+			}
 		}
-		
-			var input = document.createElement('input');
-			input.value = window.innerWidth;
-			document.body.appendChild(input);
+
+		window.onorientationchange = function() {
+			resizeVideo();
+		};
+
+		var input = document.createElement('input');
+		input.value = window.innerWidth + ' use vid' + vidWidth;
+		document.body.appendChild(input);
 	</script>
 </body>
 </html>
