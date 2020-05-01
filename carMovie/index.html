@@ -20,10 +20,10 @@
 </head>
 <body>
 	<div class="vidHolder">
-		<video width="960" height="540" controls >
+		<!--<video width="960" height="540" controls >
 		    <source src="./TalkAboutCars_DirectorsCut.540p.mp4" controls>
 		    Your browser does not support the video tag.
-		</video>
+		</video>-->
 	</div>
 	<script type="text/javascript">
 
@@ -46,8 +46,8 @@
 				vidHeight = 270;
 			}
 
-			vid.setAttribute('width', vidWidth);
-			vid.setAttribute('height', vidHeight);
+//			vid.setAttribute('width', vidWidth);
+//			vid.setAttribute('height', vidHeight);
 
 			input.value = 'w=' + winWidth + ' use vid' + vidWidth;
 		}
@@ -57,7 +57,7 @@
 		window.onorientationchange = function() {
 			setTimeout(function(){
 				resizeVideo(window.innerWidth);
-			}, 100);
+			}, 300);
 		};
 
 	</script>
