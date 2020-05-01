@@ -30,6 +30,9 @@
 		var vidHeight = 540;
 		var vid = document.querySelector('video');
 
+		var input = document.createElement('input');
+		document.body.appendChild(input);
+
 		function resizeVideo(){
 
 			var winWidth = window.innerWidth;
@@ -47,9 +50,7 @@
 			vid.setAttribute('width', vidWidth);
 			vid.setAttribute('height', vidHeight);
 
-			var input = document.createElement('input');
 			input.value = window.innerWidth + ' use vid' + vidWidth;
-			document.body.appendChild(input);
 		}
 
 		resizeVideo();
