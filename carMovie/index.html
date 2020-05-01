@@ -29,12 +29,16 @@
 	<script type="text/javascript">
 		var vidWidth = 960;
 		var vidHeigth = 540;
-		if(window.innerWidth < 641){
+		if(window.innerWidth < 1641){
 			vidWidth = 640;
 			vidHeight = 360;
 			var vid = document.querySelector('video');
 			vid.setAttribute('width', vidWidth);
 			vid.setAttribute('height', vidHeight);
+
+			var input = document.createElement('input');
+			input.value = "640";
+			document.body.appendChild(input);
 		}
 	</script>
 </body>
