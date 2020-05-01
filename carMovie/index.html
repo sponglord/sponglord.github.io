@@ -26,16 +26,15 @@
 		</video>
 	</div>
 	<script type="text/javascript">
-		var vidWidth = 960;
-		var vidHeight = 540;
-		var vid = document.querySelector('video');
 
 		var input = document.createElement('input');
 		document.body.appendChild(input);
 
-		function resizeVideo(){
+		function resizeVideo(winWidth){
 
-			var winWidth = window.innerWidth;
+			var vidWidth = 960;
+			var vidHeight = 540;
+			var vid = document.querySelector('video');
 
 			if(winWidth < 641){
 				vidWidth = 640;
@@ -50,13 +49,15 @@
 			vid.setAttribute('width', vidWidth);
 			vid.setAttribute('height', vidHeight);
 
-			input.value = window.innerWidth + ' use vid' + vidWidth;
+			input.value = winWidth + ' use vid' + vidWidth;
 		}
 
-		resizeVideo();
+		resizeVideo(window.innerWidth);
 
 		window.onorientationchange = function() {
-			resizeVideo();
+			setTimeout(function(){
+				resizeVideo(window.innerWidth);
+			}, 100);
 		};
 
 	</script>
