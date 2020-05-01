@@ -16,19 +16,31 @@
     	video:focus {
     		outline: none;
     	}
+		input{
+			background: none;
+			border: none;
+			color: #444;
+		}
     </style>
 </head>
 <body>
 	<div class="vidHolder">
-		<!--<video width="960" height="540" controls >
+		<video width="960" height="540" controls >
 		    <source src="./TalkAboutCars_DirectorsCut.540p.mp4" controls>
 		    Your browser does not support the video tag.
-		</video>-->
+		</video>
 	</div>
 	<script type="text/javascript">
 
 		var input = document.createElement('input');
 		document.body.appendChild(input);
+
+		var isDevice = false;
+
+		if(/(android)/i.test(navigator.userAgent)){// || /iphone|ipod|ipad/i.test(navigator.userAgent)){
+			isDevice = true;
+		}
+
 
 		function resizeVideo(winWidth){
 
@@ -36,7 +48,7 @@
 			var vidHeight = 540;
 			var vid = document.querySelector('video');
 
-			if(winWidth < 641){
+			if(winWidth < 800){
 				vidWidth = 640;
 				vidHeight = 360;
 			}
@@ -46,17 +58,20 @@
 				vidHeight = 270;
 			}
 
-//			vid.setAttribute('width', vidWidth);
-//			vid.setAttribute('height', vidHeight);
+			vid.setAttribute('width', vidWidth);
+			vid.setAttribute('height', vidHeight);
 
-			input.value = 'w= ' + winWidth + ' use vid' + vidWidth;
+			input.value = 'isDevice='+isDevice+' w=' + winWidth + ' use vid' + vidWidth;
 		}
 
-		resizeVideo(window.innerWidth);
+
+		var w = (isDevice)?window.screen.availWidth : window.innerWidth
+		resizeVideo(w);
 
 		window.onorientationchange = function() {
 			setTimeout(function(){
-				resizeVideo(window.innerWidth);
+				w = (isDevice)?window.screen.availWidth : window.innerWidth
+				resizeVideo(w);
 			}, 300);
 		};
 
