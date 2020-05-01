@@ -19,7 +19,9 @@
 		input{
 			background: none;
 			border: none;
-			color: #444;
+			color: #222;
+			width: 100%;
+			/*display: none;*/
 		}
     </style>
 </head>
@@ -37,6 +39,7 @@
 
 		var isDevice = false;
 
+		// iPhone (simulator) works best with window.innerWidth
 		if(/(android)/i.test(navigator.userAgent)){// || /iphone|ipod|ipad/i.test(navigator.userAgent)){
 			isDevice = true;
 		}
@@ -61,7 +64,7 @@
 			vid.setAttribute('width', vidWidth);
 			vid.setAttribute('height', vidHeight);
 
-			input.value = 'isDevice='+isDevice+' w=' + winWidth + ' use vid' + vidWidth;
+			input.value = 'isAndroid=' + isDevice + ' w=' + winWidth + ' use vid' + vidWidth;
 		}
 
 
@@ -70,6 +73,7 @@
 
 		window.onorientationchange = function() {
 			setTimeout(function(){
+				// recalculate width value
 				w = (isDevice)?window.screen.availWidth : window.innerWidth
 				resizeVideo(w);
 			}, 300);
