@@ -34,20 +34,22 @@
 
 			var winWidth = window.innerWidth;
 
-			if(winWidth < 481){
-				vidWidth = 480;
-				vidHeight = 270;
-				vid.setAttribute('width', vidWidth);
-				vid.setAttribute('height', vidHeight);
-				return;
-			}
-
 			if(winWidth < 641){
 				vidWidth = 640;
 				vidHeight = 360;
-				vid.setAttribute('width', vidWidth);
-				vid.setAttribute('height', vidHeight);
 			}
+
+			if(winWidth < 481){
+				vidWidth = 480;
+				vidHeight = 270;
+			}
+
+			vid.setAttribute('width', vidWidth);
+			vid.setAttribute('height', vidHeight);
+
+			var input = document.createElement('input');
+			input.value = window.innerWidth + ' use vid' + vidWidth;
+			document.body.appendChild(input);
 		}
 
 		resizeVideo();
@@ -56,9 +58,6 @@
 			resizeVideo();
 		};
 
-		var input = document.createElement('input');
-		input.value = window.innerWidth + ' use vid' + vidWidth;
-		document.body.appendChild(input);
 	</script>
 </body>
 </html>
