@@ -1,0 +1,68 @@
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+    <title>Flash pixels</title>
+    <style type="text/css">
+    	body{
+    		background-color: #00F;
+    	}
+    	.vidHolder{
+    		display: flex;
+    		justify-content: center;
+    		padding-top: 10px;
+    	}
+    	video:focus {
+    		outline: none;
+    	}
+		input{
+			background: none;
+			border: none;
+			color: #222;
+			width: 100%;
+			/*display: none;*/
+		}
+    </style>
+	<script>
+		/* Get the documentElement (<html>) to display the page in fullscreen */
+		var elem = document.documentElement;
+
+		/* View in fullscreen */
+		function openFullscreen() {
+			if (elem.requestFullscreen) {
+				elem.requestFullscreen();
+			} else if (elem.webkitRequestFullscreen) { /* Safari */
+				elem.webkitRequestFullscreen();
+			} else if (elem.msRequestFullscreen) { /* IE11 */
+				elem.msRequestFullscreen();
+			}
+		}
+
+		/* Close fullscreen */
+		function closeFullscreen() {
+			if (document.exitFullscreen) {
+				document.exitFullscreen();
+			} else if (document.webkitExitFullscreen) { /* Safari */
+				document.webkitExitFullscreen();
+			} else if (document.msExitFullscreen) { /* IE11 */
+				document.msExitFullscreen();
+			}
+		}
+	</script>
+</head>
+<body>
+	<!--<div class="vidHolder">
+		<video width="960" height="540" controls >
+		    <source src="./TalkAboutCars_dttBeat.540p.mp4" controls>
+		    Your browser does not support the video tag.
+		</video>
+	</div>-->
+	<button onclick="openFullscreen()">go full screen</button>
+	<button onclick="closeFullscreen()">close full screen</button>
+	<script type="text/javascript">
+
+
+	</script>
+</body>
+</html>
