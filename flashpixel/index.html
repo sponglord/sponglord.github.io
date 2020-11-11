@@ -10,14 +10,19 @@
         }
         button{
             position: absolute;
-            left: 1200px;
+        }
+        #buttonHolder{
+            position: absolute;
+            left: 700px;
+            top: 10px;
+            opacity:0.5;
+            width: 150px;
         }
         #open{
             margin-left: -20px;
         }
         #close{
-            left: 1300px;
-            margin-left: -10px;
+            margin-left: 90px;
         }
         #moveLeft{
             top: 100px;
@@ -45,12 +50,10 @@
         #canvasFrame{
             margin-top: -20px;
             margin-left: 100px;
-            -webkit-border-radius: 6px;
-            -moz-border-radius: 6px;
-            border-radius: 6px;
+            border: none;
             width: 256px;
             height: 256px;
-            background-color: #444;
+            /*background-color: #444;*/
             padding: 10px;
         }
     </style>
@@ -58,12 +61,14 @@
 </head>
 <body>
 <div id="holder">
-    <button id="open" onclick="openFullscreen()">go full screen</button>
-    <button id="close" onclick="closeFullscreen()">close full screen</button>
-    <button id="moveLeft" onclick="moveLR(true)">move left</button>
-    <button id="moveRight" onclick="moveLR(false)">move right</button>
-    <button id="moveUp" onclick="moveTB(true)">move up</button>
-    <button id="moveDown" onclick="moveTB(false)">move down</button>
+    <div id="buttonHolder">
+        <button id="open" onclick="openFullscreen()">go full screen</button>
+        <button id="close" onclick="closeFullscreen()">close full screen</button>
+        <button id="moveLeft" onclick="moveLR(true)">move left</button>
+        <button id="moveRight" onclick="moveLR(false)">move right</button>
+        <button id="moveUp" onclick="moveTB(true)">move up</button>
+        <button id="moveDown" onclick="moveTB(false)">move down</button>
+    </div>
     <div id="canvasHolder">
         <div id="canvasFrame" class="ui-draggable" style="position: relative;">
             <canvas width="256" height="256" id="canvas"></canvas>
@@ -115,6 +120,10 @@
 </script>
 <script type="text/javascript">
     var updateTimer = 0;
+    var updateTimerUI = 0;
+
+    var uiPositionArray = [{l: 700, t: 10}, {l: 950, t: 10}, {l: 1200, t: 10}, {l: 1200, t: 180}, {l:950, t: 180}, {l:700, t: 180}];
+    var currentUIPos = 0;
 
     function drawInline() {
         draw(document.getElementById("canvas"));
@@ -141,7 +150,18 @@
         }
     }
 
+    function moveUI(){
+        var ui = document.getElementById('buttonHolder');
+        currentUIPos += 1;
+        if(currentUIPos > 5){
+            currentUIPos = 0;
+        }
+        ui.style.left = uiPositionArray[currentUIPos].l + 'px';
+        ui.style.top = uiPositionArray[currentUIPos].t + 'px';
+    }
+
     updateTimer = setInterval(drawInline, 10);
+    updateTimerUI = setInterval(moveUI, 60000);
 </script>
 </body>
 </html>
