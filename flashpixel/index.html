@@ -17,12 +17,52 @@
     		outline: none;
     	}
 		button{
-			margin-top: 200px;
+			position: absolute;
+			left: 1200px;
+		}
+		#close{
+			left: 1300px;
+		}
+		#scrollDown{
+			top: 100px;
+		}
+		#scrollBack{
+			top: 500px;
+		}
+		iframe{
+			position: relative;
+			top: -130px;
+			left: -50px;
+		}
+		#holder{
+			position: fixed;
+			top: 0%;
+			left: 0%;
+			width: 100%;
+			height: 100%;
+			background-color: #0F0;
 		}
     </style>
+
+</head>
+<body>
+	<!--<div class="vidHolder">
+		<video width="960" height="540" controls >
+		    <source src="./TalkAboutCars_dttBeat.540p.mp4" controls>
+		    Your browser does not support the video tag.
+		</video>
+	</div>-->
+	<div id="holder">
+		<button id="open" onclick="openFullscreen()">go full screen</button>
+		<button id="close" onclick="closeFullscreen()">close full screen</button>
+		<button id="scrollDown" onclick="scrollDown()">scroll down</button>
+		<button id="scrollBack" onclick="scrollBack()">scroll back</button>
+	</div>
+<!--		<iframe id="ifr" src="https://www.jscreenfix.com/" width="1200" height="2000" frameborder="0"></iframe>-->
 	<script>
 		/* Get the documentElement (<html>) to display the page in fullscreen */
-		var elem = document.documentElement;
+		//		var elem = document.documentElement;
+		var elem = document.getElementById("holder");
 
 		/* View in fullscreen */
 		function openFullscreen() {
@@ -45,21 +85,14 @@
 				document.msExitFullscreen();
 			}
 		}
-	</script>
-</head>
-<body>
-	<!--<div class="vidHolder">
-		<video width="960" height="540" controls >
-		    <source src="./TalkAboutCars_dttBeat.540p.mp4" controls>
-		    Your browser does not support the video tag.
-		</video>
-	</div>-->
-	
-	<button onclick="openFullscreen()">go full screen</button>
-	<button onclick="closeFullscreen()">close full screen</button>
-	<script type="text/javascript">
 
+		function scrollDown(){
+			window.scrollTo(0,document.body.scrollHeight);
+		}
 
+		function scrollBack(){
+			window.scrollTo(0,0);
+		}
 	</script>
 </body>
 </html>
