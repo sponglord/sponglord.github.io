@@ -6,11 +6,19 @@
     font-family: "Open Sans";
 }
 
+body{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: darkolivegreen;
+}
+
 .footer-container {
     color: #fff;
-    background-color: #3b7e80;  /* Blue */
+    background-color: #3b7e80;
     padding: 20px 0;
     font-size: 15px;
+    margin-top: auto;
 
     /* Flex box styling props */
 
@@ -65,6 +73,10 @@
     font-size: 20px;
 }
 
+.instructions p{
+    text-align: center;
+}
+
 .buttons-container {
     background-color: darkolivegreen;
     display: flex;
@@ -74,12 +86,13 @@
     width: 700px;
     height: 100px;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
+    /*flex-wrap: wrap;*/
 }
 .button-item{
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     cursor: pointer;
 }
 
