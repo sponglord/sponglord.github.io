@@ -10,6 +10,7 @@
 <body>
     <div class='directions-display-container'>
         <div class='directions-display'>
+            <p class="idiot-text hidden">IDIOT!</p>
             <div class="direction-grid-container">
                 <div class="direction-grid">
                     <div id="d1" class='direction-grid-item end-item left'>
@@ -60,6 +61,11 @@
                     </div>
                 </div>
             </div>
+            <div class="buttons-container button-1">
+                <div id="b1" class='button-item'>
+                    <img src='images/1_btn_60.png'/>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -97,9 +103,28 @@
                 btn.style.opacity = 1;
             }, 500);
 
+
+            const btnId = Number(btn.getAttribute('id').substring(1));
+
             // Select random direction
-            const btnId = btn.getAttribute('id').substring(1);
-            randomise(btnId);
+            if(btnId !== 1){
+                randomise(btnId);
+            }else{
+                // Idiot button
+                // ...If not running an animation
+                if(!animRef){
+                    dirsArr.forEach((dir) => {
+                        dir.classList.add('hide-item');
+                    });
+                    directionsText.innerText = '\xa0';
+
+                    const idiotText = document.querySelector('.idiot-text');
+                    idiotText.classList.add('shown');
+                    setTimeout(() => {
+                        idiotText.classList.remove('shown');
+                    }, 2000)
+                }
+            }
         };
 
         btnsArr.forEach((btn)=>{
@@ -130,7 +155,7 @@
                 dir.classList.remove('deselected','selected','hide-item', 'shown', 'end-item', 'next-to-end-item', 'middle-item', 'left', 'right');
 
                 // Hide items higher than the number of possible directions
-                const dirId = dir.getAttribute('id').substring(1);
+                const dirId = Number(dir.getAttribute('id').substring(1));
                 if(btnId < dirId){
                     dir.classList.add('hide-item');
                 }
