@@ -46,14 +46,12 @@ body{
 }
 
 .direction-grid-container {
-    /*background-color: #1e1e1e;*/
     display: flex;
     justify-content: center;
 }
 
 .direction-grid {
     min-width: 400px;
-    /*height: 220px;*/
     display: flex;
     justify-content: space-evenly;
 }
@@ -169,7 +167,7 @@ body{
     background-color: #3b7e80;
     padding: 20px 0;
     font-size: 15px;
-    border-top: #000 1px solid;
+    /*border-top: #d4d4d1 1px solid;*/
     cursor: pointer;
 
     /*margin-top: auto;*/ /* pushes footer to bottom */
