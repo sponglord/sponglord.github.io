@@ -15,12 +15,8 @@ body{
 
 .idiot-text{
     font-size: 40px;
-    font-family: "Arial Black";
-    font-style: oblique;
+    font-weight: bold;
     margin-bottom: 25px;
-}
-
-.idiot-text.hidden{
     display: none;
 }
 
