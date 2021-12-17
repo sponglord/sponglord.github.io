@@ -110,6 +110,7 @@ body{
 
 .instructions p{
     text-align: center;
+    margin: 0 30px;
 }
 
 .buttons-container {
@@ -128,8 +129,8 @@ body{
 }
 
 .button-item{
-    width: 74px;
-    height: 74px;
+    width: 64px;
+    height: 64px;
     cursor: pointer;
 }
 
