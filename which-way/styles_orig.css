@@ -1,0 +1,183 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #d4d4d1;
+    font-family: "Open Sans";
+}
+
+body{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: darkolivegreen;
+}
+
+.footer-container {
+    color: #fff;
+    background-color: #3b7e80;
+    padding: 20px 0;
+    font-size: 15px;
+    margin-top: auto;
+
+    /* Flex box styling props */
+
+    display: flex;/* Set this property to enable the flexbox layout mode within this container - turns it into a 'flex-container' */
+
+    justify-content: center;/* Define the horizontal alignment of the flexbox container's items.
+    In the past we would have added" margin: 0 auto" to the .menu item below - but now we set a property on the parent element
+    NOTE: Flex containers only know how to position elements that are one level deep.
+     Possible values: center | flex-start | flex-end | space-around | space-between */
+}
+
+.footer {
+    /*border: 1px solid #fff;  !* For debugging *!*/
+    width: 700px;
+
+    /* Flex box styling props */
+
+    display: flex;/* Turns our .menu into a nested flex container */
+    justify-content: space-around;
+    /* space-between spreads its items out across its entire width - distributing extra horizontal space space between items.
+     "space-around" - distributes extra horizontal space to either side of each item */
+}
+
+.desc {
+    /*border: 1px solid #fff;  !* For debugging *!*/
+    display: flex;
+    justify-content: flex-end;
+}
+
+.copyright {
+    margin-left: 10px;
+}
+
+.instructions-container {
+    background-color: darkolivegreen;
+    display: flex;
+    justify-content: center;
+}
+
+.instructions {
+    width: 700px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    /* Changes the direction of the container from the default row value (which stacks elements horizontally */
+    flex-direction: column;
+    align-items: center;/* Since .header has an explicit height, items can be positioned vertically inside of it.
+     The official specification calls this “cross-axis” alignment.
+     Vertical alignment is defined by adding an align-items property to a flex container
+     Possible values: center | flex-start | flex-end | stretch | baseline */
+
+    font-size: 20px;
+}
+
+.instructions p{
+    text-align: center;
+}
+
+.buttons-container {
+    background-color: darkolivegreen;
+    display: flex;
+    justify-content: center;
+}
+.buttons {
+    width: 700px;
+    height: 100px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    /*flex-wrap: wrap;*/
+}
+.button-item{
+    width: 70px;
+    height: 70px;
+    cursor: pointer;
+}
+
+.button-item:hover{
+    opacity: 0.5;
+}
+.button-item:active{
+    opacity: 1;
+}
+
+.direction-grid-container {
+    display: flex;
+    justify-content: center;
+    background-color: #1e1e1e;
+}
+
+.direction-grid {
+    width: 700px;
+    height: 220px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /*flex-wrap: wrap;*/
+    /* flex-wrap property forces items that don’t fit to get bumped down to the next row */
+
+    /* Changes the direction of the container from the default row value (which stacks elements horizontally */
+    /*flex-direction: column; !* | column-reverse *!*/
+    /* Changing the direction of a container also changes the direction of the justify-content property.
+    It now refers to the container’s vertical alignment—not its horizontal alignment.
+    So we now need to add align-items to horizontally center our column */
+    /*align-items: center;*/
+}
+
+.direction-grid-item {
+    width: 100px;
+    height: 100px;
+    opacity: 0.25;
+    position: relative;
+    bottom: -7px
+}
+
+.direction-grid-item.selected{
+    opacity: 1;
+}
+
+.direction-grid-item.deselected{
+    opacity: 0.25;
+}
+
+.hide-item{
+    display: none
+}
+
+.end-item.left{
+    transform: rotate(-31deg);
+}
+.end-item.right{
+    transform: rotate(31deg);
+}
+
+.next-to-end-item{
+    bottom: 33px;
+}
+
+.next-to-end-item.left{
+    transform: rotate(-17deg);
+    left: -4px;
+}
+
+.next-to-end-item.right{
+    transform: rotate(17deg);
+    left: 4px
+}
+
+.middle-item{
+    bottom: 49px;
+}
+
+.middle-item.left{
+    transform: rotate(-3deg);
+    bottom: 51px;
+}
+
+.middle-item.right{
+    transform: rotate(3deg);
+    bottom: 51px;
+}

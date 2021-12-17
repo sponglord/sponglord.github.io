@@ -5,61 +5,60 @@
     <meta charset='UTF-8'/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
     <title>Which Way?</title>
-    <link rel='stylesheet' href='styles2.css'/>
+    <link rel='stylesheet' href='styles.css'/>
 </head>
 <body>
     <div class='direction-grid-container'>
         <div class='direction-grid'>
             <div id="d1" class='direction-grid-item end-item left'>
-                <img src='images/1_dir_60.jpg'/>
+                <img src='images/1_dir.jpg'/>
             </div>
             <div id="d2" class='direction-grid-item next-to-end-item left'>
-                <img src='images/2_dir_60.jpg'/>
+                <img src='images/2_dir.jpg'/>
             </div>
             <div id="d3" class='direction-grid-item middle-item left'>
-                <img src='images/3_dir_60.jpg'/>
+                <img src='images/3_dir.jpg'/>
             </div>
             <div id="d4" class='direction-grid-item middle-item right'>
-                <img src='images/4_dir_60.jpg'/>
+                <img src='images/4_dir.jpg'/>
             </div>
             <div id="d5" class='direction-grid-item next-to-end-item right'>
-                <img src='images/5_dir_60.jpg'/>
+                <img src='images/5_dir.jpg'/>
             </div>
             <div id="d6" class='direction-grid-item end-item right'>
-                <img src='images/6_dir_60.jpg'/>
+                <img src='images/6_dir.jpg'/>
             </div>
+
         </div>
     </div>
     <div class='instructions-container'>
         <div class='instructions'>
-            <p>....</p>
             <p>How many directions are there to choose from?</p>
-            <div class="buttons-container">
-                <div class="buttons">
-                    <div id="b2" class='button-item'>
-                        <img src='images/2_btn.png'/>
-                    </div>
-                    <div id="b3" class='button-item'>
-                        <img src='images/3_btn.png'/>
-                    </div>
-                    <div id="b4" class='button-item'>
-                        <img src='images/4_btn.png'/>
-                    </div>
-                    <div id="b5" class='button-item'>
-                        <img src='images/5_btn.png'/>
-                    </div>
-                    <div id="b6" class='button-item'>
-                        <img src='images/6_btn.png'/>
-                    </div>
-                </div>
+        </div>
+    </div>
+    <div class="buttons-container">
+        <div class="buttons">
+            <div id="b2" class='button-item'>
+                <img src='images/2_btn.png'/>
+            </div>
+            <div id="b3" class='button-item'>
+                <img src='images/3_btn.png'/>
+            </div>
+            <div id="b4" class='button-item'>
+                <img src='images/4_btn.png'/>
+            </div>
+            <div id="b5" class='button-item'>
+                <img src='images/5_btn.png'/>
+            </div>
+            <div id="b6" class='button-item'>
+                <img src='images/6_btn.png'/>
             </div>
         </div>
     </div>
-
     <div class='footer-container'>
         <div class='footer'>
-            <div class="desc-container">
-                <div class='desc'>Which Way?</div>
+            <div class="desc">
+                <div class='login'>Which Way?</div>
                 <div class='copyright'>&#0169 2021</div>
             </div>
             <div class='tag'>Careful...you might get lost!</div>
@@ -76,16 +75,7 @@
         const btnsArr = Array.from(btns);
 
         const listener = (e)=>{
-            // mobile 'hover' effect
-            const btn = e.currentTarget;
-            btn.style.opacity = 0.5;
-
-            setTimeout(()=>{
-                btn.style.opacity = 1;
-            }, 1000)
-
-            // Select random direction
-            const btnId = btn.getAttribute('id').substring(1);
+            const btnId = e.currentTarget.getAttribute('id').substring(1);
             randomise(btnId);
         };
 
