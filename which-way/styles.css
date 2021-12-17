@@ -145,6 +145,7 @@ body{
     background-color: #3b7e80;
     padding: 20px 0;
     font-size: 15px;
+    border-top: #86ab8f 1px solid;
 
     /*margin-top: auto;*/ /* pushes footer to bottom */
     flex-shrink: 0; /* sticks footer to bottom of instructions content */

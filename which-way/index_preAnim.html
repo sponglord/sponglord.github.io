@@ -93,18 +93,10 @@
             btn.addEventListener('click', listener);
         });
 
-        // Storage array for which directions are visible after a button is pressed
-        let dirsVisibleArr = null;
-
-        // Animation related vars
-        let startTime, currentEl, prevEl = null, elCount = 1, maxFPS = 10, animRef = null;
-
         // Create random number and style the direction elements accordingly
         const randomise = (btnId) => {
             const ranNum = Math.floor(Math.random() * btnId) + 1;
-//            console.log('### index_what-way::randomise:: ranNum', ranNum );
-
-            let itemToSelect = null;
+            console.log('### index_what-way::randomise:: ranNum', ranNum );
 
             dirsArr.forEach((dir, index) => {
                 // Remove pre-existing conditional classes
@@ -116,33 +108,21 @@
                     dir.classList.add('hide-item');
                 }
 
-                // Mark remaining visible ones as deselected
-                if(btnId >= dirId){
-                    dir.classList.add('deselected','shown');
-                }
-
-                // Store the one to be selected
+                // Mark one as selected, the other, visible ones, as not
                 if(index === ranNum - 1){
-                    itemToSelect = dir;
+                    dir.classList.add('selected','shown');
+                }else if(btnId >= dirId){
+                    dir.classList.add('deselected','shown');
                 }
             });
 
+
             // How many items are left visible
             const dirsVisible = document.querySelectorAll('.direction-grid-item.shown');
-            dirsVisibleArr = Array.from(dirsVisible);
+            const dirsVisibleArr = Array.from(dirsVisible);
 
             // Assign rotation classes etc
             assignLayout(dirsVisibleArr);
-
-            // Mark the chosen one as selected, after the animation has finished
-            function callback() {
-                itemToSelect.classList.remove('deselected');
-                itemToSelect.classList.add('selected');
-            }
-
-            // Perform animation - relating fps to the number of visible items (less = slower)
-            animate(callback, Math.floor(dirsVisibleArr.length * 1.5));
-//            callback();
         }
 
         const assignLayout = (dirsArr) => {
@@ -176,50 +156,6 @@
                 dirsArr[len - 3].classList.add('middle-item', 'right');
             }
         };
-
-
-        function animate(callback, fps) {
-            window.requestAnimationFrame(function(timestamp){
-                startTime = timestamp || new Date().getTime() //if browser doesn't support requestAnimationFrame, generate our own timestamp using Date
-                strobe(timestamp, 2000, fps, callback);
-            })
-        }
-
-        function strobe(timestamp, duration, fps, callback) {
-            // If browser doesn't support requestAnimationFrame, generate our own timestamp using Date:
-            const tStamp = timestamp || new Date().getTime()
-            const runtime = tStamp - startTime;
-
-            prevEl?.classList.remove('selected');
-
-            currentEl = dirsVisibleArr[elCount - 1];
-            currentEl.classList.remove('deselected');
-            currentEl.classList.add('selected');
-
-            prevEl = currentEl;
-
-            elCount++;
-            if(elCount >= dirsVisibleArr.length + 1){
-                elCount = 1;
-            }
-
-            // if duration not met yet
-            if (runtime < duration) {
-                setTimeout(() => {
-                    animRef = window.requestAnimationFrame(function(timestamp){ // call requestAnimationFrame again with parameters
-                        strobe(timestamp, duration, fps, callback);
-                    });
-                }, 1000 / fps);
-
-            }else{
-                prevEl.classList.remove('selected');
-                elCount = 1;
-                window.cancelAnimationFrame(animRef);
-                animRef = null;
-                callback();
-            }
-        }
-
     </script>
 
 </body>
