@@ -8,28 +8,35 @@
     <link rel='stylesheet' href='styles.css'/>
 </head>
 <body>
-    <div class='direction-grid-container'>
-        <div class='direction-grid'>
-            <div id="d1" class='direction-grid-item end-item left'>
-                <img src='images/1_dir_60.jpg'/>
+    <div class='directions-display-container'>
+        <div class='directions-display'>
+            <div class="direction-grid-container">
+                <div class="direction-grid">
+                    <div id="d1" class='direction-grid-item end-item left'>
+                        <img src='images/1_dir_60.jpg'/>
+                    </div>
+                    <div id="d2" class='direction-grid-item next-to-end-item left'>
+                        <img src='images/2_dir_60.jpg'/>
+                    </div>
+                    <div id="d3" class='direction-grid-item middle-item left'>
+                        <img src='images/3_dir_60.jpg'/>
+                    </div>
+                    <div id="d4" class='direction-grid-item middle-item right'>
+                        <img src='images/4_dir_60.jpg'/>
+                    </div>
+                    <div id="d5" class='direction-grid-item next-to-end-item right'>
+                        <img src='images/5_dir_60.jpg'/>
+                    </div>
+                    <div id="d6" class='direction-grid-item end-item right'>
+                        <img src='images/6_dir_60.jpg'/>
+                    </div>
+                </div>
             </div>
-            <div id="d2" class='direction-grid-item next-to-end-item left'>
-                <img src='images/2_dir_60.jpg'/>
-            </div>
-            <div id="d3" class='direction-grid-item middle-item left'>
-                <img src='images/3_dir_60.jpg'/>
-            </div>
-            <div id="d4" class='direction-grid-item middle-item right'>
-                <img src='images/4_dir_60.jpg'/>
-            </div>
-            <div id="d5" class='direction-grid-item next-to-end-item right'>
-                <img src='images/5_dir_60.jpg'/>
-            </div>
-            <div id="d6" class='direction-grid-item end-item right'>
-                <img src='images/6_dir_60.jpg'/>
-            </div>
+            <p class="direction-text-marker">....</p>
+            <p class="directions-text">&nbsp;</p>
         </div>
     </div>
+
     <div class='instructions-container'>
         <div class='instructions'>
             <p>....</p>
@@ -67,7 +74,13 @@
     </div>
 
     <script type="application/javascript">
-        // get ref to direction elements
+        // Storage array for which directions are visible after a button is pressed
+        let dirsVisibleArr = null;
+
+        // Animation related vars
+        let startTime, animFPSInt, textInt, currentEl, prevEl = null, elCount = 1, maxFPS = 10, animRef = null, showAnim = true;
+
+        // Get ref to direction elements
         const dirs = document.querySelectorAll('.direction-grid-item');
         const dirsArr = Array.from(dirs);
 
@@ -76,13 +89,13 @@
         const btnsArr = Array.from(btns);
 
         const listener = (e)=>{
-            // mobile 'hover' effect
+            // Mobile 'hover' effect
             const btn = e.currentTarget;
             btn.style.opacity = 0.5;
 
             setTimeout(()=>{
                 btn.style.opacity = 1;
-            }, 1000)
+            }, 1000);
 
             // Select random direction
             const btnId = btn.getAttribute('id').substring(1);
@@ -93,11 +106,17 @@
             btn.addEventListener('click', listener);
         });
 
-        // Storage array for which directions are visible after a button is pressed
-        let dirsVisibleArr = null;
+        const footer = document.querySelector('.footer-container');
+        footer.addEventListener('click', () => {
+            showAnim = !showAnim;
 
-        // Animation related vars
-        let startTime, currentEl, prevEl = null, elCount = 1, maxFPS = 10, animRef = null;
+            footer.style.opacity = 0.5;
+            setTimeout(()=>{
+                footer.style.opacity = 1;
+            }, 1000)
+        });
+
+        const directionsText = document.querySelector('.directions-text');
 
         // Create random number and style the direction elements accordingly
         const randomise = (btnId) => {
@@ -135,14 +154,24 @@
             assignLayout(dirsVisibleArr);
 
             // Mark the chosen one as selected, after the animation has finished
-            function callback() {
+            function selectItem() {
                 itemToSelect.classList.remove('deselected');
                 itemToSelect.classList.add('selected');
+
+                clearTimeout(textInt);
+
+                directionsText.innerText = `Take direction... ${ranNum}`;
+                textInt = setTimeout(() => {
+                    directionsText.innerText = '\xa0';
+                }, 2000)
             }
 
-            // Perform animation - relating fps to the number of visible items (less = slower)
-            animate(callback, Math.floor(dirsVisibleArr.length * 1.5));
-//            callback();
+            if(showAnim){
+                // Perform animation - relating fps to the number of visible items (less = slower)
+                animate(selectItem, Math.floor(dirsVisibleArr.length * 1.5));
+            }else{
+                selectItem();
+            }
         }
 
         const assignLayout = (dirsArr) => {
@@ -179,7 +208,16 @@
 
 
         function animate(callback, fps) {
-            window.requestAnimationFrame(function(timestamp){
+
+            clearTimeout(textInt);
+            directionsText.innerText = 'Which Way?';
+
+            if(animRef){
+                window.cancelAnimationFrame(animRef);
+                clearTimeout(animFPSInt);
+            }
+
+            animRef = window.requestAnimationFrame(function(timestamp){
                 startTime = timestamp || new Date().getTime() //if browser doesn't support requestAnimationFrame, generate our own timestamp using Date
                 strobe(timestamp, 2000, fps, callback);
             })
@@ -205,7 +243,7 @@
 
             // if duration not met yet
             if (runtime < duration) {
-                setTimeout(() => {
+                animFPSInt = setTimeout(() => {
                     animRef = window.requestAnimationFrame(function(timestamp){ // call requestAnimationFrame again with parameters
                         strobe(timestamp, duration, fps, callback);
                     });

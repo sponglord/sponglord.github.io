@@ -13,18 +13,49 @@ body{
     background-color: #1e1e1e;
 }
 
-.direction-grid-container {
+.directions-display-container {
+    background-color: #1e1e1e;
     display: flex;
     justify-content: center;
-    background-color: #1e1e1e;
+}
+
+.directions-display {
+    width: 700px;
+    height: 220px;
+    font-size: 15px;
+
+    display: flex;
+    flex-direction: column;
+    /* Possible values: center | flex-start | flex-end | stretch | baseline */
+    justify-content: flex-end;
+}
+
+.directions-display p{
+    text-align: center;
+}
+
+.direction-text-marker{
+    margin-top: 10px;
+    font-size: 20px;
+    opacity: 0.6;
+}
+
+.directions-text{
+    margin-bottom: 15px;
+    opacity: 0.7;
+}
+
+.direction-grid-container {
+    /*background-color: #1e1e1e;*/
+    display: flex;
+    justify-content: center;
 }
 
 .direction-grid {
-    width: 700px;
-    height: 220px;
+    min-width: 400px;
+    /*height: 220px;*/
     display: flex;
     justify-content: space-evenly;
-    align-items: center;
 }
 
 .direction-grid-item {
@@ -134,18 +165,12 @@ body{
     cursor: pointer;
 }
 
-/*.button-item:hover{
-    opacity: 0.5;
-}
-.button-item:active{
-    opacity: 1;
-}*/
-
 .footer-container {
     background-color: #3b7e80;
     padding: 20px 0;
     font-size: 15px;
-    border-top: #86ab8f 1px solid;
+    border-top: #000 1px solid;
+    cursor: pointer;
 
     /*margin-top: auto;*/ /* pushes footer to bottom */
     flex-shrink: 0; /* sticks footer to bottom of instructions content */
