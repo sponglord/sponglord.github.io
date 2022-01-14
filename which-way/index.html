@@ -253,7 +253,9 @@
             const tStamp = timestamp || new Date().getTime()
             const runtime = tStamp - startTime;
 
-            prevEl?.classList.remove('selected');
+            if(prevEl){
+                prevEl.classList.remove('selected');
+            }
 
             currentEl = dirsVisibleArr[elCount - 1];
             currentEl.classList.remove('deselected');
